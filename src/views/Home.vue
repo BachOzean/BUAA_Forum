@@ -22,7 +22,6 @@
         </div>
         <ul class="c-l-list">
           <li class="c-l-item" v-for="post in postList" :key="post.post_id">
-            
 
             <div class="l-container" @click="goDetail(post.post_id)">
               <h4 class="con-title">{{ post.title }}</h4>
