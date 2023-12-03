@@ -6,6 +6,8 @@
       </div>
       <div class="center">
         <!-- <h4 class="c-l-title">热门帖子</h4> -->
+
+
         <div class="c-l-header">
           <div class="new btn-iconfont" :class="{ active: timeOrder }" @click="selectOrder('time')">
             <i class="iconfont icon-polygonred"></i>New
