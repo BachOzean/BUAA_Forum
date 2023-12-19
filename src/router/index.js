@@ -7,6 +7,8 @@ import Message from '../views/Message.vue'
 import Publish from '../views/Publish.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
+import UserInfor from "../views/UserInfor.vue";
+import UserChange from "../views/UserChange.vue";
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err);
@@ -17,6 +19,16 @@ const routes = [{
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/user',
+    name: 'Userinfo',
+    component: UserInfor
+  },
+  {
+    path: '/change',
+    name: 'Change',
+    component: UserChange
   },
   {
     path: '/post/:id',

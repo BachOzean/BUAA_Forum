@@ -1,9 +1,9 @@
 
 import axios from 'axios';
-axios.defaults.baseURL = "/api/v1/";
+axios.defaults.baseURL = "http://127.0.0.1:5000";
 axios.interceptors.request.use((config) => {
   let loginResult = JSON.parse(localStorage.getItem("loginResult"));	// 解析从localStorage里拿出的loginResult
-  if (loginResult) { 
+  if (loginResult) {
 	const token = loginResult.access_token		// 取出accessToken
 	config.headers.Authorization = `Bearer ${token}`;	// 将accessToken放入到请求头里
   }

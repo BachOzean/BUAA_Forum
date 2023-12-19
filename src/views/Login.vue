@@ -44,18 +44,18 @@ export default {
       this.$axios({
         method: 'post',
         url: '/login',
-        data: JSON.stringify({
+        data: {
           username: this.username,
           password: this.password
-        })
+        }
       }).then((res) => {
-        console.log(res.data)
+        //console.log(res.message)
         if (res.code == 1000) {
-          localStorage.setItem("loginResult", JSON.stringify(res.data));
-          this.$store.commit("login", res.data);
+          localStorage.setItem("loginResult", JSON.stringify(res.message));
+          this.$store.commit("login", res.message);
           this.$router.push({ path: this.redirect || '/' })
         } else {
-          console.log(res.msg)
+          console.log(res.message)
         }
       }).catch((error) => {
         console.log(error)

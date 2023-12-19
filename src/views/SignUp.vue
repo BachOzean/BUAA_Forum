@@ -7,6 +7,10 @@
         <label>Username</label>
       </div>
       <div class="user-box">
+        <input type="text" v-model="academy" required>
+        <label>academy</label>
+      </div>
+      <div class="user-box">
         <input type="text" v-model="email" required>
         <label>E-mail</label>
       </div>
@@ -39,11 +43,12 @@ export default {
   name: "SignUp",
   data() {
     return {
-      username: "",
-      password: "",
-      email: '',
+      username: "name",
+      academy:"BUAA",
+      password: "11",
+      email: '11',
       gender: 1,
-      confirm_password: "",
+      confirm_password: "11",
       submitted: false
     };
   },
@@ -56,21 +61,22 @@ export default {
     submit() {
       this.$axios({
         method: 'post',
-        url: '/signup',
+        url: '/register',
         data: {
           username: this.username,
+          academy:this.academy,
           email: this.email,
           gender: this.gender,
           password: this.password,
           confirm_password: this.confirm_password
         }
       }).then((res) => {
-        console.log(res.data);
+        //console.log(res.message);
         if (res.code == 1000) {
-          console.log('signup success');
+          console.log("注册成功");
           this.$router.push({ name: "Login" });
         } else {
-          console.log(res.msg);
+          console.log(res.message);
         }
       }).catch((error) => {
         console.log(error)
