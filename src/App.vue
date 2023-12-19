@@ -12,11 +12,9 @@
 
 <script>
 import HeadBar from "@/components/HeadBar.vue";
-import Footer from '@/components/Footer.vue'
 export default {
   components: {
-    HeadBar,
-    Footer
+    HeadBar
   }
 };
 </script>

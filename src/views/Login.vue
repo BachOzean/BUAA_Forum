@@ -18,7 +18,7 @@
           <span></span>
           Submit
         </a>
-        <a href="#" @click.prevent="submit">
+        <a href="#" @click.prevent="goToSignUp">
           <span></span>
           <span></span>
           <span></span>
@@ -60,7 +60,11 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
+    },
+    goToSignUp() {
+      this.$router.push({ name: "SignUp" });
     }
+
   }
 };
 </script>

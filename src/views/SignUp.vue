@@ -22,6 +22,12 @@
         <input type="password" v-model="confirm_password" required>
         <label>Confirm Password</label>
       </div>
+      <div class="message-container" v-if="message !== ''">
+        <div class="message-box" :class="{'success': isSuccess, 'error': !isSuccess}">
+          <p>{{ message }}</p>
+        </div>
+      </div>
+
 
       <a href="#" @click.prevent="submit">
         <span></span>
@@ -44,11 +50,11 @@ export default {
       email: '',
       gender: 1,
       confirm_password: "",
-      submitted: false
+      submitted: false,
+      message: ''
     };
   },
-  computed: {
-  },
+  computed: {},
   created() {
 
   },
@@ -65,10 +71,11 @@ export default {
           confirm_password: this.confirm_password
         }
       }).then((res) => {
+        this.massage = res.massage;
         console.log(res.data);
         if (res.code == 1000) {
           console.log('signup success');
-          this.$router.push({ name: "Login" });
+          this.$router.push({name: "Login"});
         } else {
           console.log(res.msg);
         }
@@ -89,6 +96,22 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
+}
+
+.message-container {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #03e9f4; /* 主题颜色 */
+  background-color: rgb(118, 118, 118);
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 5px 1px #03e9f4; /* 内发光效果 */
+}
+
+.message-box {
+  color: #fff;
+  text-align: left;
 }
 
 .signup-box {

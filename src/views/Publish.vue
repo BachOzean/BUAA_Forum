@@ -21,7 +21,7 @@
         </div>
         <!---此处放置富文本--->
         <div class="post-text-con">
-          <mavon-editor style="max-height: 600px;" v-model="content" />
+          <mavon-editor style="max-height: 1000px;min-height: 480px" v-model="content" />
         </div>
       </div>
       <div class="post-footer">
@@ -31,7 +31,7 @@
         </div>
       </div>
       <!-- <div class="post-content">
-        
+
       </div> -->
     </div>
     <div class="right">
@@ -57,6 +57,8 @@ export default {
   name: "Publish",
   data() {
     return {
+      username: "",
+      userID: "",
       title: "",
       content: "",
       showCommunityList: false,
@@ -70,6 +72,8 @@ export default {
         method: "post",
         url: "/post",
         data: {
+          username: this.$store.getters.username,
+          userID: this.$store.getters.userID,
           title: this.title,
           content: this.content,
           community_id: this.selectCommunity.community_id
@@ -119,25 +123,22 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+
 .content {
-  max-width: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  min-height: 100vh;
+  flex-grow: 1;
   justify-content: center;
-  margin: 0 auto;
-  padding: 20px 24px;
+  padding: 20px 20px;
   margin-top: 48px;
-  background: #6190E8;
-  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #6190E8, #A7BFE8);
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #6190E8, #A7BFE8);
+  background: #2c353d;
+
 
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   .left {
     flex-grow: 1;
-    max-width: 740px;
+    max-width: 1000px;
     word-break: break-word;
     flex: 1;
     margin: 32px;
@@ -324,7 +325,7 @@ export default {
           overflow: hidden;
           display: block;
           width: 100%;
-          height: 200px;
+          height: 700px;
           padding: 12px 8px;
           outline: none;
           border: 1px solid #edeff1;
@@ -332,7 +333,7 @@ export default {
           color: #1c1c1c;
           font-size: 14px;
           font-weight: 400;
-          line-height: 21px;
+          line-height: 30px;
         }
       }
     }

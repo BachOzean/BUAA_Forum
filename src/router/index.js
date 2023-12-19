@@ -38,7 +38,7 @@ const routes = [{
     name: 'Publish',
     component: Publish,
     meta: {
-      requireAuth: true
+      requireAuth: false
     }
   },
   {
