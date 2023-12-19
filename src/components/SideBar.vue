@@ -121,6 +121,7 @@ export default {
 .side-bar-container {
 	display: flex;
 	flex-direction: column;
+  margin-block: 20px;
 	font-size: 14px;
 }
 

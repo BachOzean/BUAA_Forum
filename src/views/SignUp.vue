@@ -1,34 +1,36 @@
 <template>
-  <div class="main">
-    <div class="container">
-      <h2 class="form-title">注册</h2>
-      <div class="form-group">
-        <label for="name"><span style="color:red;">* </span>用户名</label>
-        <el-input type="text" required name="name" id="name" placeholder="用户名" v-model="username" />
+  <div class="signup-box">
+    <h2>SignUp</h2>
+    <form>
+      <div class="user-box">
+        <input type="text" v-model="username" required>
+        <label>Username</label>
       </div>
-      <div class="form-group">
-        <label for="email"><span style="color:red;">* </span>邮箱</label>
-        <el-input type="email" required name="email" id="email" placeholder="请输入邮箱" v-model="email" />
+      <div class="user-box">
+        <input type="text" v-model="email" required>
+        <label>E-mail</label>
       </div>
-      <div class="form-group">
-        <label for="pass"><span style="color:red;">* </span>密码</label>
-        <el-input type="password" required name="pass" id="pass" placeholder="密码" v-model="password" />
+      <div class="user-box">
+        <input type="text" v-model="gender" required>
+        <label>Gender</label>
       </div>
-      <div class="form-group">
-        <label for="re_pass"><span style="color:red;">* </span>确认密码</label>
-        <el-input type="password" required name="re_pass" id="re_pass" placeholder="确认密码" v-model="confirm_password" />
+      <div class="user-box">
+        <input type="password" v-model="password" required>
+        <label>Password</label>
       </div>
-      <div class="form-group">
-        <label for="gender"><span style="color:red;">* </span>性别</label>
-        <div id="gender">
-          <el-radio v-model="gender" :label="1">男</el-radio>
-          <el-radio v-model="gender" :label="2">女</el-radio>
-        </div>
+      <div class="user-box">
+        <input type="password" v-model="confirm_password" required>
+        <label>Confirm Password</label>
       </div>
-      <div class="form-btn">
-        <button type="button" class="btn btn-info" @click="submit">提交</button>
-      </div>
-    </div>
+
+      <a href="#" @click.prevent="submit">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Submit
+      </a>
+    </form>
   </div>
 </template>
 
@@ -77,82 +79,175 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-.main {
-  background: #6190E8;
-  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #A7BFE8, #6190E8);
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #A7BFE8, #6190E8);
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+<style scoped>
+html {
+  height: 100%;
+}
 
-  padding: 150px 0;
-  min-height: 60vh;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: linear-gradient(#141e30, #243b55);
+}
 
-  .container {
-    width: 600px;
-    background: #fff;
-    margin: 0 auto;
-    max-width: 1200px;
-    padding: 20px;
+.signup-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
 
-    .form-title {
-      margin-bottom: 33px;
-      text-align: center;
-    }
+.signup-box h2 {
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
 
-    .form-group {
-      margin: 15px;
+.signup-box .user-box {
+  position: relative;
+}
 
-      label {
-        display: inline-block;
-        max-width: 100%;
-        margin-bottom: 5px;
-        font-weight: 700;
-      }
+.signup-box .user-box input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
 
-      // .form-control {
-      //   display: block;
-      //   width: 100%;
-      //   height: 34px;
-      //   padding: 6px 12px;
-      //   font-size: 14px;
-      //   line-height: 1.42857143;
-      //   color: #555;
-      //   background-color: #fff;
-      //   background-image: none;
-      //   border: 1px solid #ccc;
-      //   border-radius: 4px;
-      // }
-    }
+.signup-box .user-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: 0.5s;
+}
 
-    .form-btn {
-      display: flex;
-      justify-content: center;
+.signup-box .user-box input:focus ~ label,
+.signup-box .user-box input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
 
-      .btn {
-        padding: 6px 20px;
-        font-size: 18px;
-        line-height: 1.3333333;
-        border-radius: 6px;
-        display: inline-block;
-        margin-bottom: 0;
-        font-weight: 400;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        -ms-touch-action: manipulation;
-        touch-action: manipulation;
-        cursor: pointer;
-        border: 1px solid transparent;
-      }
+.signup-box form a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #03e9f4;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.5s;
+  margin-top: 40px;
+  letter-spacing: 4px;
+}
 
-      .btn-info {
-        color: #fff;
-        background-color: #5bc0de;
-        border-color: #46b8da;
-      }
-    }
+.signup-box a:hover {
+  background: #03e9f4;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+}
+
+.signup-box a span {
+  position: absolute;
+  display: block;
+}
+
+.signup-box a span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: btn-anim1 1s linear infinite;
+}
+
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+
+.signup-box a span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: btn-anim2 1s linear infinite;
+  animation-delay: 0.25s;
+}
+
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+
+.signup-box a span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: btn-anim3 1s linear infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,
+  100% {
+    right: 100%;
+  }
+}
+
+.signup-box a span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  animation: btn-anim4 1s linear infinite;
+  animation-delay: 0.75s;
+}
+
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,
+  100% {
+    bottom: 100%;
   }
 }
 </style>

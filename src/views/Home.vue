@@ -244,25 +244,25 @@ export default {
   flex-direction: row;
   justify-content: center;
   margin: 88px auto 0;
-  padding: 20px 24px;
-  background: #242c3d;
+  padding: 20px 20px;
+  background: #2c353d;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #18243d, #4f5d73);
+  background: -webkit-linear-gradient(to right, #2c353d, #4f5d73);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #1d2a44, #303f56);
+  background: linear-gradient(to right, #2c353d, #303f56);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
   .left {
     width: 312px;
     height: fit-content;
-    margin-top: 28px;
-    background: #fff;
-    border-radius: 4px;
+    margin-top: 20px;
+    background: var(--Dark-3, #262d34);
+    border-radius: 6px;
   }
 
   .center {
-    width: 640px;
+    width: 800px;
     padding-bottom: 10px;
     margin: 0 24px;
 
