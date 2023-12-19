@@ -7,7 +7,7 @@
         <label>Username</label>
       </div>
       <div class="user-box">
-        <input type="password" v-model="password" required>
+        <input type="text" v-model="password" required>
         <label>Password</label>
       </div>
       <div class="button-container">
@@ -44,16 +44,18 @@ export default {
       this.$axios({
         method: 'post',
         url: '/login',
-        data: JSON.stringify({
+        data:{
           username: this.username,
           password: this.password
-        })
+        }
       }).then((res) => {
-        console.log(res.data)
+        console.log(res.code)
+        console.log(res.message)
+
         if (res.code == 1000) {
           localStorage.setItem("loginResult", JSON.stringify(res.data));
           this.$store.commit("login", res.data);
-          this.$router.push({ path: this.redirect || '/' })
+          this.$router.push("Home")
         } else {
           console.log(res.msg)
         }

@@ -22,8 +22,8 @@
         <input type="password" v-model="confirm_password" required>
         <label>Confirm Password</label>
       </div>
-      <div class="message-container" v-if="message !== ''">
-        <div class="message-box" :class="{'success': isSuccess, 'error': !isSuccess}">
+      <div class="message-container" v-if="this.message !== ''">
+        <div class="message-box">
           <p>{{ message }}</p>
         </div>
       </div>
@@ -71,8 +71,10 @@ export default {
           confirm_password: this.confirm_password
         }
       }).then((res) => {
-        this.massage = res.massage;
-        console.log(res.data);
+        this.message = res.message
+        console.log(res.code)
+        console.log(res.message)
+        console.log(this.message)
         if (res.code == 1000) {
           console.log('signup success');
           this.$router.push({name: "Login"});
