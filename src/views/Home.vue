@@ -17,7 +17,8 @@
           </div>
           <div class="search-text-box">
             <div class="search-text">
-              <input type="text" class="search-text" placeholder="Let’s share what's going on in your mind..."/>
+              <input type="text" class="search-text" placeholder="请输入帖子的关键词" v-model="keyword"
+                     @keyup.enter="searchPost"/>
             </div>
           </div>
           <div class="publish-btn" @click="goPublish">发表</div>
@@ -42,7 +43,7 @@
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1"
                            :page-sizes="[5, 10, 20, 30]" :page-size="pageSize"
                            layout="total, sizes, prev, pager, next, jumper"
-                           :total="pageTotal.total">
+                           :total="postsTotal">
             </el-pagination>
           </div>
         </ul>
@@ -77,14 +78,10 @@ export default {
       post_id: 1,
       title: "test",
       content: "test",
-      vote_num: 1,
-      comments: 1,
-      community: {
-        community_id: 1,
-        community_name: "test",
-        introduction: "test",
-        create_time: "2021-08-31 00:00:00"
-      }
+      like_num: 1,
+      user_id: 1,
+      post_time: '',
+      comments: 1
     };
 
     return {
@@ -93,7 +90,7 @@ export default {
       postList: [post],
       pageNumber: 1,
       pageSize: 5,
-      pageTotal: {},
+      postsTotal: 1,
       keyword: '',
       isSearch: false
     };
@@ -125,7 +122,7 @@ export default {
     getPostList() {
       this.$axios({
         method: "get",
-        url: "/posts2",
+        url: "/get_posts",
         params: {
           page: this.pageNumber,
           size: this.pageSize,
@@ -133,10 +130,9 @@ export default {
         }
       })
           .then(response => {
-            console.log(response.data, 222);
-            if (response.code == 1000) {
-              this.postList = response.data.list;
-              this.pageTotal = response.data.page;
+            if (response.code === 1000) {
+              this.postList = response.data;
+              this.postsTotal = response.total_num;
             } else {
               console.log(response.msg);
             }
@@ -183,17 +179,17 @@ export default {
       this.isSearch = true;
       const response = await this.$axios({
         method: "get",
-        url: "/search",
+        url: "/search_post",
         params: {
           page: this.pageNumber,
           size: this.pageSize,
-          search: this.keyword
+          keyword: this.keyword
         }
       });
       if (response.code === 1000) {
         console.log(response.data);
-        this.postList = response.data.list;
-        this.pageTotal = response.data.page;
+        this.postList = response.data;
+        this.postsTotal = response.total_num;
       } else {
         console.log(response.message);
       }
