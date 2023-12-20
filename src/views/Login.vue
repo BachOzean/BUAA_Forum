@@ -49,15 +49,12 @@ export default {
           password: this.password
         }
       }).then((res) => {
-        console.log(res.code)
-        console.log(res.message)
-
         if (res.code == 1000) {
-          localStorage.setItem("loginResult", JSON.stringify(res.data));
-          this.$store.commit("login", res.data);
+          localStorage.setItem("loginResult", JSON.stringify(res.user));
+          this.$store.commit("login", res.user);
           this.$router.push("Home")
         } else {
-          console.log(res.msg)
+          console.log(res.message)
         }
       }).catch((error) => {
         console.log(error)

@@ -4,23 +4,27 @@
     <form>
       <div class="user-box">
         <input type="text" v-model="username" required>
-        <label>Username</label>
+        <label>Username*</label>
+      </div>
+      <div class="user-box">
+        <input type="text" v-model="gender" required>
+        <label>Gender*</label>
+      </div>
+      <div class="user-box">
+        <input type="password" v-model="password" required>
+        <label>Password*</label>
+      </div>
+      <div class="user-box">
+        <input type="password" v-model="confirm_password" required>
+        <label>Confirm Password*</label>
+      </div>
+      <div class="user-box">
+        <input type="text" v-model="academy" required>
+        <label>Academy</label>
       </div>
       <div class="user-box">
         <input type="text" v-model="email" required>
         <label>E-mail</label>
-      </div>
-      <div class="user-box">
-        <input type="text" v-model="gender" required>
-        <label>Gender</label>
-      </div>
-      <div class="user-box">
-        <input type="password" v-model="password" required>
-        <label>Password</label>
-      </div>
-      <div class="user-box">
-        <input type="password" v-model="confirm_password" required>
-        <label>Confirm Password</label>
       </div>
       <div class="message-container" v-if="this.message !== ''">
         <div class="message-box">
@@ -48,9 +52,9 @@ export default {
       username: "",
       password: "",
       email: '',
-      gender: 1,
+      academy: '',
+      gender: '',
       confirm_password: "",
-      submitted: false,
       message: ''
     };
   },
@@ -62,7 +66,7 @@ export default {
     submit() {
       this.$axios({
         method: 'post',
-        url: '/signup',
+        url: '/register',
         data: {
           username: this.username,
           email: this.email,
@@ -72,14 +76,11 @@ export default {
         }
       }).then((res) => {
         this.message = res.message
-        console.log(res.code)
-        console.log(res.message)
-        console.log(this.message)
         if (res.code == 1000) {
           console.log('signup success');
           this.$router.push({name: "Login"});
         } else {
-          console.log(res.msg);
+          console.log(res.message);
         }
       }).catch((error) => {
         console.log(error)
