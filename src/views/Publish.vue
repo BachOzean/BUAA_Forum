@@ -1,14 +1,13 @@
-
 <template>
   <div class="content">
     <div class="left">
       <div class="post-name">我好想写点什么</div>
       <div class="post-type">
         <input type="text" class="post-type-value" placeholder="选择一个频道" v-model="selectCommunity.community_name"
-          @click="showCommunity()" />
+               @click="showCommunity()"/>
         <ul class="post-type-options" v-show="showCommunityList">
           <li class="post-type-cell" v-for="(community, index) in communityList" :key="community.id"
-            @click="selected(index)">
+              @click="selected(index)">
             {{ community.community_name }}
           </li>
         </ul>
@@ -21,7 +20,7 @@
         </div>
         <!---此处放置富文本--->
         <div class="post-text-con">
-          <mavon-editor style="max-height: 1000px;min-height: 480px" v-model="content" />
+          <mavon-editor style="max-height: 1000px;min-height: 480px" v-model="content"/>
         </div>
       </div>
       <div class="post-footer">
@@ -40,12 +39,19 @@
           <i class="p-r-icon"></i>发帖规范
         </h5>
         <ul class="p-r-content">
-          <li class="p-r-item">1.文明用语：请使用礼貌和尊重的用语，不要使用粗鲁或攻击性的语言，也不要使用任何种族歧视、性别歧视或其他不当言论。</li>
-          <li class="p-r-item">2.主题明确：请确保您的主题与所在板块或话题相关，并且您的帖子内容明确、准确、具有实际意义。</li>
-          <li class="p-r-item">3.不涉及侵权、违法、敏感内容：请确保您的帖子不会侵犯任何个人或组织的权利，不包含任何违法内容或敏感信息。</li>
+          <li class="p-r-item">
+            1.文明用语：请使用礼貌和尊重的用语，不要使用粗鲁或攻击性的语言，也不要使用任何种族歧视、性别歧视或其他不当言论。
+          </li>
+          <li class="p-r-item">2.主题明确：请确保您的主题与所在板块或话题相关，并且您的帖子内容明确、准确、具有实际意义。
+          </li>
+          <li class="p-r-item">
+            3.不涉及侵权、违法、敏感内容：请确保您的帖子不会侵犯任何个人或组织的权利，不包含任何违法内容或敏感信息。
+          </li>
           <li class="p-r-item">4.避免重复：在发帖之前，请先搜索一下，看看是否有类似的主题已经存在，以避免重复发帖。</li>
           <li class="p-r-item">5.不要发广告：请不要在论坛上发布广告或推销产品或服务，这些帖子通常会被管理员删除。</li>
-          <li class="p-r-item">6.保持格式整齐：请确保您的帖子格式整齐、易于阅读，不要使用太多的格式化标记或过度的大写字母。</li>
+          <li class="p-r-item">
+            6.保持格式整齐：请确保您的帖子格式整齐、易于阅读，不要使用太多的格式化标记或过度的大写字母。
+          </li>
         </ul>
       </div>
     </div>
@@ -58,7 +64,6 @@ export default {
   data() {
     return {
       username: "",
-      userID: "",
       title: "",
       content: "",
       showCommunityList: false,
@@ -70,43 +75,36 @@ export default {
     submit() {
       this.$axios({
         method: "post",
-        url: "/post",
+        url: "/create_post",
         data: {
           username: this.$store.getters.username,
-          userID: this.$store.getters.userID,
           title: this.title,
           content: this.content,
-          community_id: this.selectCommunity.community_id
+          tag_name: '分享',
         }
       })
-        .then(response => {
-          console.log(response.data);
-          if (response.code == 1000) {
-            this.$router.push({ path: this.redirect || "/" });
-          } else {
-            console.log(response.msg);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+          .then(response => {
+            if (response.code === 1000) {
+              this.$router.push({path: this.redirect || "/"});
+            } else {
+              console.log(response.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
     },
     getCommunityList() {
       this.$axios({
         method: "get",
-        url: "/community"
+        url: "/get_tags"
       })
-        .then(response => {
-          console.log(response.data);
-          if (response.code == 1000) {
-            this.communityList = response.data;
-          } else {
-            console.log(response.msg);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+          .then(response => {
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.log(error);
+          });
     },
     showCommunity() {
       this.showCommunityList = !this.showCommunityList;
@@ -136,6 +134,7 @@ export default {
 
 
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   .left {
     flex-grow: 1;
     max-width: 1000px;

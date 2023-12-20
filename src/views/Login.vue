@@ -44,7 +44,7 @@ export default {
       this.$axios({
         method: 'post',
         url: '/login',
-        data:{
+        data: {
           username: this.username,
           password: this.password
         }
@@ -52,7 +52,7 @@ export default {
         if (res.code == 1000) {
           localStorage.setItem("loginResult", JSON.stringify(res.user));
           this.$store.commit("login", res.user);
-          this.$router.push("Home")
+          this.$router.push({name: "Home"})
         } else {
           console.log(res.message)
         }
@@ -61,7 +61,7 @@ export default {
       })
     },
     goToSignUp() {
-      this.$router.push({ name: "SignUp" });
+      this.$router.push({name: "SignUp"});
     }
 
   }
@@ -134,12 +134,14 @@ body {
   color: #03e9f4;
   font-size: 12px;
 }
+
 .button-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 40px;
 }
+
 .login-box form a {
   position: relative;
   display: inline-block;
