@@ -3,7 +3,7 @@
     <div class="left-light"></div>
     <div class="right-light"></div>
     <div class="signup-box">
-      <h2>SignUp</h2>
+      <h2>Sign Up</h2>
       <form>
         <div class="user-box">
           <input type="text" v-model="username" required>

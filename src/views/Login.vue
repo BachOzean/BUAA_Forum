@@ -140,6 +140,7 @@ html {
 
 .login-box .user-box {
   position: relative;
+  font-family: "Poppins",system-ui;
 }
 
 .login-box .user-box input {
