@@ -1,33 +1,36 @@
 <template>
-  <div class="login-box">
-    <h2>Login</h2>
-    <form>
-      <div class="user-box">
-        <input type="text" v-model="username" required>
-        <label>Username</label>
-      </div>
-      <div class="user-box">
-        <input type="text" v-model="password" required>
-        <label>Password</label>
-      </div>
-      <div class="button-container">
-        <a href="#" @click.prevent="submit">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          Submit
-        </a>
-        <a href="#" @click.prevent="goToSignUp">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          SignUp
-        </a>
-      </div>
-
-    </form>
+  <div class="page-container">
+    <div class="left-light"></div>
+    <div class="right-light"></div>
+    <div class="login-box">
+      <h2>Login</h2>
+      <form>
+        <div class="user-box">
+          <input type="text" v-model="username" required>
+          <label>Username</label>
+        </div>
+        <div class="user-box">
+          <input type="text" v-model="password" required>
+          <label>Password</label>
+        </div>
+        <div class="button-container">
+          <a href="#" @click.prevent="submit">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Submit
+          </a>
+          <a href="#" @click.prevent="goToSignUp">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            SignUp
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -73,11 +76,45 @@ html {
   height: 100%;
 }
 
-body {
+.left-light {
+  position: fixed;
+  left: 0;
+  top: -300px;
+  width: 310px;
+  height: 1150px;
+  background-image: linear-gradient(
+      180deg,
+      rgba(84, 84, 212, 0.27) 0%,
+      rgba(84, 84, 212, 0.11) 100%
+  );
+  transform: rotate(-54deg);
+  border-radius: 155px;
+  filter: blur(99.5px);
+  z-index: 0;
+}
+
+.right-light {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 310px;
+  height: 1150px;
+  background-image: linear-gradient(
+      180deg,
+      rgba(251, 168, 28, 0.11) 0%,
+      rgba(224, 86, 136, 0.06) 100%
+  );
+  transform: rotate(65.5deg);
+  border-radius: 155px;
+  filter: blur(99.5px);
+  z-index: 0;
+
+}
+
+.page-container {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: linear-gradient(#141e30, #243b55);
 }
 
 .login-box {
@@ -87,10 +124,11 @@ body {
   width: 400px;
   padding: 40px;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
+  backdrop-filter: blur(10px);
 }
 
 .login-box h2 {

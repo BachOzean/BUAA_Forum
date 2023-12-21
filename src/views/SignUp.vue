@@ -1,46 +1,50 @@
 <template>
-  <div class="signup-box">
-    <h2>SignUp</h2>
-    <form>
-      <div class="user-box">
-        <input type="text" v-model="username" required>
-        <label>Username*</label>
-      </div>
-      <div class="user-box">
-        <input type="text" v-model="gender" required>
-        <label>Gender*</label>
-      </div>
-      <div class="user-box">
-        <input type="password" v-model="password" required>
-        <label>Password*</label>
-      </div>
-      <div class="user-box">
-        <input type="password" v-model="confirm_password" required>
-        <label>Confirm Password*</label>
-      </div>
-      <div class="user-box">
-        <input type="text" v-model="academy" required>
-        <label>Academy</label>
-      </div>
-      <div class="user-box">
-        <input type="text" v-model="email" required>
-        <label>E-mail</label>
-      </div>
-      <div class="message-container" v-if="this.message !== ''">
-        <div class="message-box">
-          <p>{{ message }}</p>
+  <div class="page-container">
+    <div class="left-light"></div>
+    <div class="right-light"></div>
+    <div class="signup-box">
+      <h2>SignUp</h2>
+      <form>
+        <div class="user-box">
+          <input type="text" v-model="username" required>
+          <label>Username*</label>
         </div>
-      </div>
+        <div class="user-box">
+          <input type="text" v-model="gender" required>
+          <label>Gender*</label>
+        </div>
+        <div class="user-box">
+          <input type="password" v-model="password" required>
+          <label>Password*</label>
+        </div>
+        <div class="user-box">
+          <input type="password" v-model="confirm_password" required>
+          <label>Confirm Password*</label>
+        </div>
+        <div class="user-box">
+          <input type="text" v-model="academy" required>
+          <label>Academy</label>
+        </div>
+        <div class="user-box">
+          <input type="text" v-model="email" required>
+          <label>E-mail</label>
+        </div>
+        <div class="message-container" v-if="this.message !== ''">
+          <div class="message-box">
+            <p>{{ message }}</p>
+          </div>
+        </div>
 
 
-      <a href="#" @click.prevent="submit">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Submit
-      </a>
-    </form>
+        <a href="#" @click.prevent="submit">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Submit
+        </a>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -90,15 +94,41 @@ export default {
 };
 </script>
 <style scoped>
-html {
-  height: 100%;
+
+
+
+.left-light {
+  position: fixed;
+  left: 0;
+  top: -300px;
+  width: 310px;
+  height: 1150px;
+  background-image: linear-gradient(
+      180deg,
+      rgba(84, 84, 212, 0.27) 0%,
+      rgba(84, 84, 212, 0.11) 100%
+  );
+  transform: rotate(-54deg);
+  border-radius: 155px;
+  filter: blur(99.5px);
+  z-index: 10;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background: linear-gradient(#141e30, #243b55);
+.right-light {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 310px;
+  height: 1150px;
+  background-image: linear-gradient(
+      180deg,
+      rgba(251, 168, 28, 0.11) 0%,
+      rgba(224, 86, 136, 0.06) 100%
+  );
+  transform: rotate(65.5deg);
+  border-radius: 155px;
+  filter: blur(99.5px);
+  z-index: 10;
 }
 
 .message-container {
@@ -124,7 +154,7 @@ body {
   width: 500px;
   padding: 40px;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
