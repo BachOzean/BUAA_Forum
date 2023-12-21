@@ -7,10 +7,6 @@
         <label>Username</label>
       </div>
       <div class="user-box">
-        <input type="text" v-model="academy" required>
-        <label>academy</label>
-      </div>
-      <div class="user-box">
         <input type="text" v-model="email" required>
         <label>E-mail</label>
       </div>
@@ -26,6 +22,12 @@
         <input type="password" v-model="confirm_password" required>
         <label>Confirm Password</label>
       </div>
+      <div class="message-container" v-if="this.message !== ''">
+        <div class="message-box">
+          <p>{{ message }}</p>
+        </div>
+      </div>
+
 
       <a href="#" @click.prevent="submit">
         <span></span>
@@ -43,17 +45,16 @@ export default {
   name: "SignUp",
   data() {
     return {
-      username: "name",
-      academy:"BUAA",
-      password: "11",
-      email: '11',
+      username: "",
+      password: "",
+      email: '',
       gender: 1,
-      confirm_password: "11",
-      submitted: false
+      confirm_password: "",
+      submitted: false,
+      message: ''
     };
   },
-  computed: {
-  },
+  computed: {},
   created() {
 
   },
@@ -64,19 +65,21 @@ export default {
         url: '/register',
         data: {
           username: this.username,
-          academy:this.academy,
           email: this.email,
           gender: this.gender,
           password: this.password,
           confirm_password: this.confirm_password
         }
       }).then((res) => {
-        //console.log(res.message);
+        this.message = res.message
+        console.log(res.code)
+        console.log(res.message)
+        console.log(this.message)
         if (res.code == 1000) {
-          console.log("注册成功");
-          this.$router.push({ name: "Login" });
+          console.log('signup success');
+          this.$router.push({name: "Login"});
         } else {
-          console.log(res.message);
+          console.log(res.msg);
         }
       }).catch((error) => {
         console.log(error)
@@ -95,6 +98,22 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
+}
+
+.message-container {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #03e9f4; /* 主题颜色 */
+  background-color: rgb(118, 118, 118);
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 5px 1px #03e9f4; /* 内发光效果 */
+}
+
+.message-box {
+  color: #fff;
+  text-align: left;
 }
 
 .signup-box {
