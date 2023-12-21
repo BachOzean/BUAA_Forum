@@ -26,7 +26,7 @@
       <div class="main-container">
         <div class="image-wrapper">
           <div class="search-text">
-            <input type="text" class="search-text" placeholder="Type here to search..."  />
+            <input type="text" class="search-text" placeholder="Type here to search..."/>
           </div>
           <img loading="lazy" src="../assets/images/search.svg" alt="search" class="image"/>
         </div>
@@ -123,6 +123,7 @@ export default {
     },
     goLogout() {
       this.$store.commit("logout");
+      this.$router.push({name: "Home"})
     },
   }
 };
@@ -180,7 +181,6 @@ export default {
 }
 
 
-
 .image {
   aspect-ratio: 1;
   object-fit: contain;
@@ -210,9 +210,11 @@ export default {
     overflow: hidden;
   }
 }
+
 .icon:hover {
   background-color: var(--red-red-90, #ff571a);
 }
+
 .collections {
   display: flex;
   gap: 20px;
