@@ -70,16 +70,17 @@ export default {
     submit() {
       this.$axios({
         method: 'post',
-        url: '/register',
+        url: '/signup',
         data: {
           username: this.username,
           email: this.email,
           gender: this.gender,
           password: this.password,
-          confirm_password: this.confirm_password
+          confirm_password: this.confirm_password,
+          academy: this.academy
         }
       }).then((res) => {
-        this.message = res.message
+        // this.message = res.message
         if (res.code == 1000) {
           console.log('signup success');
           this.$router.push({name: "Login"});
@@ -149,7 +150,7 @@ export default {
 
 .signup-box {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   width: 500px;
   padding: 40px;
