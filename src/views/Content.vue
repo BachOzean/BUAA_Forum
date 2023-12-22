@@ -20,7 +20,7 @@
       <div class="blog-header">
         <div class="blog-cover">
           <div class="blog-author">
-            <h3>Russ Beye</h3>
+            <h3>{{post.user_name}}</h3>
           </div>
         </div>
       </div>
@@ -49,17 +49,17 @@
 
       <div class="blog-footer">
         <ul>
-          <li class="published-date">2 days ago</li>
+          <li class="published-date">{{post.post_time}}}</li>
           <li class="comments"><a href="#">
             <svg class="icon-bubble">
               <use xlink:href="#icon-bubble"></use>
             </svg>
             <span class="numero">4</span></a></li>
           <li class="shares"><a href="#">
-            <svg class="icon-star">
+            <svg class="icon-star" @click="vote(post.post_id)">
               <use xlink:href="#icon-star"></use>
             </svg>
-            <span class="numero">1</span></a></li>
+            <span class="numero">{{ post.likes_count }}</span></a></li>
         </ul>
       </div>
 
@@ -113,7 +113,9 @@ export default {
         post_id: 0,
         title: '11111111111',
         content: "`code` $$a_x $$ 你还有什么不懂的，不懂的话就去原两把吧，原着原着，你就醒悟了，你会发现，原来还是自己原的太少，为什么要放弃原神这款旷世之作而去玩其他答辩游戏，原神带给你的不止有享受感，欢快感，还给你带来了真理，人为什么会愤怒，为什么会难过，为什么会不幸福，究其根本就是原的太少，你越原越兴奋，越原越幸福，越幸福才要继续原，幸福产自原神，原神生产幸福，幸福围绕原神，原神发散幸福，将你开始原的一刻记作起点，将结束原的那一刻记作终点，起点趋于负无穷，终点趋于正无穷，无限地原，无限的真理，真理就是原得太少，原得不够多，真理驱使我们的前进，前进的我们悟出真理，原来是我原的太少，原来原神是无限的，有限的电源，手机的性能，寿命，这些物理因素并不能限制原的进行，不能阻止真理的诞生，不能阻止追寻真理的我们，我们的大脑是强大的，可以包罗万象，你看，天空被我们轻易地吸收，汪洋被我们轻易地容纳，而原神，存在我们的脑内，即使没有手机，没有电脑等载体，我们存在真理的大脑依旧可以诞生生产真理的原神，我们诞生出原神，原神孕育出真理，真理滋养着原神，原神生产出真理，这样一来，世界便是原神，宇宙便是原神，原神便是无限，有限的世间万物和无限的原神相比，根本不值一提，有限在无限面前只是一瞬，我们将原神的记忆传承给下一代，传承给新的生物，传承给新的世界，原的记忆在宇宙中流传，我们的死亡并不是终点，这是下一次原的起点，不会终结",
-        vote_num: 0,
+        user_name: 'default',
+        post_time: '2023',
+        likes_count: 0,
         community: {
           community_id: 0,
           community_name: '11',
@@ -144,23 +146,20 @@ export default {
             console.log(error);
           });
     },
-    vote(post_id, direction) {
+    vote(post_id) {
       this.$axios({
         method: "post",
         url: "/vote",
         data: {
           post_id: post_id,
-          direction: direction,
         }
       })
           .then(response => {
             if (response.code == 1000) {
-              console.log("vote success");
+              console.log("点赞成功");
               this.getPostDetail();
             } else if (response.code == 1009) {
               Vue.prototype.$message.error('请勿重复投票')
-            } else if (response.code == 1010) {
-              Vue.prototype.$message.error('已过投票时间')
             } else {
               console.log(response.msg);
               Vue.prototype.$message.error('请先登录')
