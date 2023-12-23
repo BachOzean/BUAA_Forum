@@ -25,17 +25,31 @@
         </div>
         <ul class="c-l-list">
           <li class="c-l-item" v-for="post in postList" :key="post.post_id">
-
-            <div class="l-container" @click="goDetail(post.post_id)">
-              <h4 class="con-title">{{ post.title }}</h4>
-              <div class="con-memo">
-                <p>{{ post.content }}</p>
+            <div class="blog-container" @click = "goDetail(post.post_id)">
+              <div class="blog-header">
+                <div class="blog-author--no-cover">
+                  <h3>Russ Beye</h3>
+                </div>
+                <button class="button" @click.stop="onClick">
+                  <span>🎉</span>
+                  <span>Like</span>
+                </button>
               </div>
-              <div class="user-btn">
-              <span class="btn-item">
-                <i class="iconfont icon-comment"></i>
-                <span>{{ post.comments }} comments</span>
-              </span>
+
+              <div class="blog-body">
+                <div class="blog-title">
+                  <h1><a href="#">这是一个没有封面的帖子</a></h1>
+                </div>
+                <div class="blog-summary">
+                  <p>你为什么不玩原神 </p>
+                </div>
+                <div class="blog-tags">
+                  <ul>
+                    <li><a href="#">design</a></li>
+                    <li><a href="#">web dev</a></li>
+                    <li><a href="#">css</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
           </li>
@@ -69,7 +83,7 @@ import SideBar from '../components/SideBar.vue';
 import TimeMeter from '../components/TimeMeter.vue';
 import GithubProjectCard from './components/GithubProjectCard.vue';
 import Vue from 'vue';
-
+import confetti from 'canvas-confetti';
 export default {
   name: "Home",
   components: {TimeMeter, SideBar, GithubProjectCard},
@@ -96,6 +110,12 @@ export default {
     };
   },
   methods: {
+    onClick() {
+      confetti({
+        particleCount: 150,
+        spread: 60
+      });
+    },
     selectOrder(order) {
       this.order = order;
       this.getPostList();
@@ -210,10 +230,210 @@ export default {
 </script>
 
 <style scoped lang="less">
+
+button {
+  cursor: pointer;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.button {
+  background-color: #404663;
+  color: #fff;
+  border: 0;
+  font-size: 2rem;
+  font-weight: 400;
+  padding: 0.5em 1.25em;
+  border-radius: 0.5em;
+  z-index: 999;
+  position: relative;
+  display: flex;
+  gap: 0.5em;
+  box-shadow:
+      0px 1.7px 2.2px rgba(0, 0, 0, 0.02),
+      0px 4px 5.3px rgba(0, 0, 0, 0.028),
+      0px 7.5px 10px rgba(0, 0, 0, 0.035),
+      0px 13.4px 17.9px rgba(0, 0, 0, 0.042),
+      0px 25.1px 33.4px rgba(0, 0, 0, 0.05),
+      0px 60px 80px rgba(0, 0, 0, 0.07);
+}
+
+.button:active {
+  transform: scale(1.01);
+}
+// Blog container
+//-------------------------
+.blog-container {
+  background: #262d34;
+  border-radius: 6px;
+  font-family: Source Sans Pro, sans-serif;
+  font-weight: 100;
+  width: auto;
+}
+.blog-container a {
+  color: #4d4dff;
+  text-decoration: none;
+  transition: .25s ease;
+  &:hover {
+    border-color: #fa6733;
+    color: #fa6733;
+  }
+}
+
+// Blog header
+//-------------------------
+.blog-cover {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/17779/yosemite-3.jpg");
+  background-size: cover;
+  border-radius: 5px 5px 0 0;
+  height: 15rem;
+  box-shadow: inset hsla(0, 0, 0, .2) 0 64px 64px 16px;
+}
+.blog-author,
+.blog-author--no-cover {
+  margin: 0 10px;
+  width: 100%;
+}
+.blog-author h3::before,
+.blog-author--no-cover h3::before {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/17779/russ.jpeg");
+  background-size: cover;
+  border-radius: 50%;
+  content: " ";
+  display: inline-block;
+  height: 32px;
+  margin-right: .5rem;
+  position: relative;
+  top: 8px;
+  width: 32px;
+}
+.blog-author h3 {
+  color: #f5f5f5;
+  font-weight: 100;
+}
+.blog-author--no-cover h3 {
+  color: lighten(#f5f5f5, 40%);
+  font-weight: 100;
+}
+
+// Blog body
+//-------------------------
+.blog-body {
+  margin: 0 10px;
+  width: 90%;
+  row-gap: 5px;
+}
+.video-body {
+  height: 100%;
+  width: 100%;
+}
+.blog-title h1 a {
+  color: #f5f5f5;
+  font-weight: 100;
+  font-family: Source Sans Pro;
+
+}
+.blog-summary p {
+  color: #f5f5f5;
+}
+.blog-tags ul {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  list-style: none;
+  padding-left: 0;
+  gap: 10px;
+}
+.blog-tags li {
+  border-radius: 20px;
+  background: #2C353D;
+}
+.blog-tags a {
+  //border: 1px solid lighten(#333, 40%);
+
+  border-radius: 3px;
+  font-size: .75rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  letter-spacing: 1px;
+  padding: 0 .5rem;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: 5rem;
+  color: var(--Secondary-Color-Secondary-5, #C5D0E6);
+  /* SemiBold 10 */
+  font-family: Source Sans Pro;
+  font-style: normal;
+  font-weight: 600;
+}
+
+// Blog footer
+//-------------------------
+.blog-footer {
+  border-top: 1px solid lighten(#333, 70%);
+  margin: 0 auto;
+  padding-bottom: .125rem;
+  width: 80%;
+}
+.blog-footer ul {
+  list-style: none;
+  display: flex;
+  flex: auto;
+  justify-content: flex-end;
+  padding-left: 0;
+}
+.blog-footer li:first-child {
+  margin-right: auto;
+}
+.blog-footer li + li {
+  margin-left: .5rem;
+}
+.blog-footer li {
+  color: lighten(#333, 40%);
+  font-size: .75rem;
+  height: 1.5rem;
+  letter-spacing: 1px;
+  line-height: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+  white-space: nowrap;
+  & a {
+    color: lighten(#333, 40%);
+  }
+}
+.comments {
+  margin-right: 1rem;
+}
+.published-date {
+  border: 1px solid lighten(#333, 40%);
+  border-radius: 3px;
+  padding: 0 .5rem;
+}
+.numero {
+  position: relative;
+  top: -0.5rem;
+}
+
+// Icons
+//-------------------------
+.icon-star,
+.icon-bubble {
+  fill: lighten(#333, 40%);
+  height:24px;
+  margin-right: .5rem;
+  transition: .25s ease;
+  width: 24px;
+  &:hover {
+    fill: #fa6733;
+  }
+}
+
 .columns {
   max-width: 100%;
-
-
 }
 
 .search-text-box {
@@ -422,6 +642,8 @@ export default {
         position: relative;
         border-radius: 16px;
         background-color: var(--Dark-3, #262d34);
+        box-shadow: hsla(0, 0, 0, .2) 0 4px 2px -2px;
+
         display: flex;
         margin-top: 20px;
         flex-direction: column;
