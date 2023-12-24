@@ -70,7 +70,7 @@ export default {
     submit() {
       this.$axios({
         method: 'post',
-        url: '/signup',
+        url: '/register',
         data: {
           username: this.username,
           email: this.email,

@@ -1,37 +1,79 @@
 <template>
+<div class="father">
+  <left-rail></left-rail>
+
   <div class="content">
+
     <el-descriptions title="用户信息" column="1">
-      <el-descriptions-item label="用户名">Darth
+      <el-descriptions-item label="用户名">{{ user.user_name }}
       </el-descriptions-item>
       <br>
       <el-descriptions-item label="性别">
-        武装直升机
+      {{user.gender}}
       </el-descriptions-item>
-      <el-descriptions-item label="学校">北京航空航天大学
+      <el-descriptions-item label="专业">{{ user.academy }}
       </el-descriptions-item>
       <br>
-      <el-descriptions-item label="邮箱">2416617876@qq.com
+      <el-descriptions-item label="邮箱">{{ user.email }}
       </el-descriptions-item>
       <br>
     </el-descriptions>
-    <el-button class="change" @click="changeinfor()">修改信息
+    <el-button class="change" @click="ChangeInfo()">修改信息
     </el-button>
   </div>
-
+</div>
 </template>
 <script setup>
+
+import LeftRail from "../components/LeftRail.vue";
+
 export default {
-  methods:{
-    changeinfor(){
-      this.$router.push({name: 'Change'});
+  name: "UserInfo",
+  components:{LeftRail},
+  data() {
+    // var u = {
+    //     'user_id': '',
+    //     'user_name': '',
+    //     'gender': '',
+    //     'academy': '',
+    //     'email':''
+    // };
+    return {
+      user: '',
+    };
+  },
+  methods: {
+    getUserInfo() {
+      this.$axios({
+        method: "get",
+        url: "/get_user",
+      })
+          .then(response => {
+            if (response.code === 1000) {
+              this.user = response.user;
+              console.log(response.user);
+            } else {
+              console.log(response.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    ChangeInfo() {
+      this.$router.push({name: 'UserChange'});
     }
-  }
+  },
+  mounted: function () {
+    this.getUserInfo();
+  },
+
 }
 
 </script>
 
-<style scoped lang="less" >
-.content{
+<style scoped lang="less">
+.content {
   text-align: left;
   max-width: 100%;
   box-sizing: border-box;
@@ -48,7 +90,8 @@ export default {
   /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #6190E8, #A7BFE8);
   align-items: center;
-  .change{
+
+  .change {
     margin: 10px auto;
     text-align: center;
     justify-content: center;

@@ -7,8 +7,9 @@ import Message from '../views/Message.vue'
 import Publish from '../views/Publish.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
-import UserInfor from "../views/UserInfor.vue";
-import UserChange from "../views/UserChange.vue";
+import UserInfor from "@/views/UserInfor.vue";
+import UserChange from "@/views/UserChange.vue";
+import CommunityPage from "@/views/CommunityPage.vue";
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err);
@@ -21,22 +22,17 @@ const routes = [{
     component: Home
   },
   {
-    path: '/user',
-    name: 'Userinfo',
-    component: UserInfor
-  },
-  {
-    path: '/change',
-    name: 'Change',
-    component: UserChange
-  },
-  {
     path: '/post/:id',
     name: 'Content',
     component: Content
   },
   {
-    path: '/community/:id',
+    path: '/communitypage',
+    name: 'CommunityPage',
+    component: CommunityPage
+  },
+  {
+    path: '/community',
     name: 'Community',
     component: Community
   },
@@ -62,6 +58,16 @@ const routes = [{
     path: '/signup',
     name: "SignUp",
     component: SignUp
+  },
+  {
+    path: '/userinfor',
+    name: "UserInfor",
+    component: UserInfor,
+  },
+  {
+    path: '/userchange',
+    name: "UserChange",
+    component: UserChange,
   }
 ]
 

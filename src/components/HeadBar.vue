@@ -49,7 +49,7 @@
           <a class="login-btn" @click="goSignUp">注册</a>
         </div>
         <div class="user-box" v-show="isLogin">
-          <span class="user">{{ currUsername }}</span>
+          <span class="user" @click="goUserInfo">{{ currUsername }}</span>
           <div class="dropdown-content">
             <a @click="goLogout">登出</a>
           </div>
@@ -125,6 +125,9 @@ export default {
       this.$store.commit("logout");
       this.$router.push({name: "Home"})
     },
+    goUserInfo() {
+      this.$router.push({name: "UserInfor"})
+    }
   }
 };
 </script>
