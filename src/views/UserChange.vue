@@ -1,9 +1,8 @@
 <template>
-<<<<<<< HEAD
   <div class="Father">
     <left-rail></left-rail>
 
-<div class="content">
+<div class="content">34r43
 
 <el-form :inline="true" :model="formInline" class="form">
   <el-row>
