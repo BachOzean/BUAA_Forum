@@ -1,17 +1,20 @@
 <template>
   <div class="columns">
     <div class="content">
-      <!--      <h1 class="title">我的帖子</h1>-->
+
       <div class="center">
         <!-- <h4 class="c-l-title">热门帖子</h4> -->
         <div class="c-l-header">
+          <div class="title-container">
+            <h1 class="title">我的帖子</h1>
+          </div>
           <div class="search-text-box">
             <div class="search-text">
               <input type="text" class="search-text" placeholder="请输入帖子的关键词" v-model="keyword"
                      @keyup.enter="searchMyPost"/>
             </div>
           </div>
-           <div class="publish-btn" @click="searchMyPost">搜索</div>
+          <div class="publish-btn" @click="searchMyPost">搜索</div>
         </div>
         <ul class="c-l-list">
           <li class="c-l-item" v-for="post in postList" :key="post.post_id">
@@ -20,7 +23,7 @@
                 <div class="blog-author--no-cover">
                   <h3>{{ post.user_name }}</h3>
                 </div>
-                <button class="button" @click.stop="deletePost(post.post_id)"  style="white-space: nowrap">删除</button>
+                <button class="button" @click.stop="deletePost(post.post_id)" style="white-space: nowrap">删除</button>
               </div>
 
               <div class="blog-body">
@@ -288,6 +291,7 @@ button {
   width: 100%;
 }
 
+
 .blog-title h1 a {
   color: #f5f5f5;
   font-weight: 100;
@@ -446,6 +450,12 @@ button {
   background: linear-gradient(to right, #2c353d, #303f56);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+  .title {
+    text-align: center;
+    color: #f5f5f5;
+    font-weight: bold; /* or use a numeric value like 700 for bold */
+    font-family: 'Source Sans Pro', sans-serif;
+  }
 
   .left {
     width: 312px;

@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <h1 class="title">社团组织</h1>
 
     <div class="c-l-header">
+      <h1 class="title">社团列表</h1>
       <div class="search-text-box">
         <div class="search-text">
           <input type="text" class="search-text" placeholder="请输入社团的关键词" v-model="keyword"
@@ -24,10 +24,11 @@
           </button>
         </div>
 
+        <!-- 将成员列表改为横向排列 -->
         <div class="community-users">
           <h5>成员:</h5>
-          <ul>
-            <li v-for="user in community.users" :key="user.user_id">
+          <ul class="horizontal-user-list">
+            <li v-for="user in community.users" :key="user.user_id" class="horizontal-user-item">
               {{ user.user_name }}
               <button class="follow-button" @click.stop="followUser(user.user_id)">
                 关注
@@ -205,6 +206,9 @@ export default {
 
   .title {
     text-align: center;
+    color: #f5f5f5;
+    font-weight: bold; /* or use a numeric value like 700 for bold */
+    font-family: 'Source Sans Pro', sans-serif;
   }
 
   .join-button {
@@ -510,5 +514,23 @@ export default {
     border-radius: 4px; /* 圆角按钮 */
     cursor: pointer; /* 添加手型光标 */
   }
+
+
+}
+
+.horizontal-user-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.horizontal-user-item {
+  margin-right: 10px; /* 调整成员之间的间距 */
+}
+
+/* 使用 'Source Sans Pro' 字体 */
+.content {
+  font-family: 'Source Sans Pro', sans-serif;
 }
 </style>
