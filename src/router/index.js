@@ -10,9 +10,13 @@ import SignUp from '../views/SignUp.vue'
 import UserInfor from "@/views/UserInfor.vue";
 import UserChange from "@/views/UserChange.vue";
 import CommunityPage from "@/views/CommunityPage.vue";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err);
+    return originalPush.call(this, location).catch(err => err);
 }
 Vue.use(VueRouter)
 
@@ -20,6 +24,7 @@ const routes = [{
     path: '/',
     name: 'Home',
     component: Home
+<<<<<<< HEAD
   },
   {
     path: '/post/:id',
@@ -69,12 +74,66 @@ const routes = [{
     name: "UserChange",
     component: UserChange,
   }
+=======
+},
+    {
+        path: '/post/:id',
+        name: 'Content',
+        component: Content,
+        meta: {
+            requireAuth: true
+        }
+    },
+    {
+        path: '/community/:id',
+        name: 'Community',
+        component: Community
+    },
+    {
+        path: '/message',
+        name: 'Message',
+        component: Message
+    },
+    {
+        path: '/publish',
+        name: 'Publish',
+        component: Publish,
+        meta: {
+            requireAuth: true
+        }
+    },
+    {
+        path: '/login',
+        name: "Login",
+        component: Login
+    },
+    {
+        path: '/signup',
+        name: "SignUp",
+        component: SignUp
+    },
+    {
+        path: '/userinfor',
+        name: "UserInfor",
+        component: UserInfor,
+    },
+    {
+        path: '/userchange',
+        name: "UserChange",
+        component: UserChange,
+    },
+    {
+        path: '/communities/',
+        name: 'CommunityPage',
+        component: CommunityPage
+    }
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router

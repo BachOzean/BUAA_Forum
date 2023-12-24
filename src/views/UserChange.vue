@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="Father">
     <left-rail></left-rail>
 
@@ -47,11 +48,20 @@
         <el-col>
           <el-form-item label="原始密码">
             <el-input v-model="oldPassword"></el-input>
+=======
+  <div class="content">
+    <el-form :inline="true" :model="formInline" class="form">
+      <el-row>
+        <el-col>
+          <el-form-item label="用户名">
+            <el-input v-model="formInline.user_name" type="text"></el-input>
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col>
+<<<<<<< HEAD
           <el-form-item label="修改密码">
             <el-input v-model="newPassword"></el-input>
           </el-form-item>
@@ -68,10 +78,67 @@
 
 </div>
 </div>
+=======
+          <el-form-item label="性别">
+            <el-input v-model="formInline.gender"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <el-form-item label="学校">
+            <el-input v-model="formInline.academy"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <el-form-item label="邮箱">
+            <el-input v-model="formInline.email"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+    </el-form>
+    <el-button class="change" @click="change()">
+      确认修改
+    </el-button>
+    <el-button slot="reference" class="password" @click="showPasswordModal()">
+      修改密码
+    </el-button>
+    <div class="modal" v-show="isPasswordModalVisible">
+      <el-form>
+        <el-row>
+          <el-col>
+            <el-form-item label="原始密码">
+              <el-input v-model="oldPassword"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-form-item label="修改密码">
+              <el-input v-model="newPassword"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-button class="passchange" @click="changePassWord()">
+          确认修改
+        </el-button>
+        <el-button class="cancle" @click="hidePasswordModal()">
+          取消修改
+        </el-button>
+      </el-form>
+    </div>
+
+
+  </div>
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
 
 </template>
 
 <script setup>
+<<<<<<< HEAD
 import LeftRail from "@/components/LeftRail.vue";
 
 export default {
@@ -87,11 +154,31 @@ export default {
         user_name:"darth",
         gender: "沃尔玛购物袋",
         email:"2416617876@qq.com",
+=======
+import Vue from "vue";
+
+export default {
+
+  name: "dataForUser",
+  data() {
+    return {
+      isPasswordModalVisible: false,
+      oldPassword: "",
+      newPassword: "",
+      formInline: {
+        user_name: "darth",
+        gender: "沃尔玛购物袋",
+        email: "2416617876@qq.com",
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
         academy: "BUAA"
       }
     }
   },
+<<<<<<< HEAD
   methods:{
+=======
+  methods: {
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
     getUserInfo() {
       this.$axios({
         method: "get",
@@ -100,7 +187,10 @@ export default {
           .then(response => {
             if (response.code === 1000) {
               this.formInline = response.user
+<<<<<<< HEAD
               console.log(response.user);
+=======
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
             } else {
               console.log(response.message);
             }
@@ -110,7 +200,42 @@ export default {
           });
     },
     change() {
+<<<<<<< HEAD
       // 在这里执行表单提交的逻辑
+=======
+      this.$axios.post('/change_user', this.formInline)
+          .then(response => {
+            // 请求成功，处理响应
+            if (response.code === 409) {
+              Vue.prototype.$message.error('新用户名已存在')
+            }
+          })
+          .catch(error => {
+            // 请求失败，处理错误
+            console.error('更新用户信息失败', error);
+          });
+    },
+    changePassWord() {
+      this.$axios({
+        method: "post",
+        url: "/modify_password",
+        data: {
+          oldPassword: this.oldPassword,
+          newPassword: this.newPassword,
+        }
+      })
+          .then(response => {
+            if (response.code === 1000) {
+              Vue.prototype.$message.info("密码修改成功")
+              this.isPasswordModalVisible = false;
+            } else {
+              console.log(response.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
     },
     showPasswordModal() {
       this.isPasswordModalVisible = true;
@@ -118,11 +243,14 @@ export default {
     hidePasswordModal() {
       this.isPasswordModalVisible = false;
     },
+<<<<<<< HEAD
     confirmPasswordChange() {
       // 在这里执行密码修改的逻辑，使用 this.oldPassword 和 this.newPassword
       // 修改完成后可以隐藏弹窗
       this.isPasswordModalVisible = false;
     }
+=======
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
   },
   mounted: function () {
     this.getUserInfo();
@@ -131,7 +259,11 @@ export default {
 </script>
 
 <style scoped lang="less">
+<<<<<<< HEAD
 .content{
+=======
+.content {
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
   text-align: left;
   max-width: 100%;
   box-sizing: border-box;
@@ -149,10 +281,19 @@ export default {
   background: linear-gradient(to right, #6190E8, #A7BFE8);
   align-items: center;
   margin-left: 500px;
+<<<<<<< HEAD
   .form{
     display: block;
   }
   .change{
+=======
+
+  .form {
+    display: block;
+  }
+
+  .change {
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
     margin: 10px auto;
     text-align: center;
     justify-content: center;
@@ -160,7 +301,12 @@ export default {
     width: 100px;
     margin-left: 180px;
   }
+<<<<<<< HEAD
   .passchange{
+=======
+
+  .passchange {
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
     margin: 10px auto;
     text-align: center;
     justify-content: center;

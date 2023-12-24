@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 <div class="content">
   <h1 class="title">群组列表</h1>
 
@@ -31,10 +32,47 @@
     </div>
   </ul>
 </div>
+=======
+  <div class="content">
+    <h1 class="title">社区列表</h1>
+
+    <div class="c-l-header">
+      <div class="search-text-box">
+        <div class="search-text">
+          <input type="text" class="search-text" placeholder="请输入社区的关键词" v-model="keyword"
+                 @keyup.enter="searchCommunityList"/>
+        </div>
+      </div>
+      <div class="publish-btn" @click="searchCommunityList">搜索</div>
+    </div>
+
+    <ul class="c-l-list">
+      <li class="c-l-item" v-for="community in communityList" :key="community.community_id">
+        <div class="l-container" @click="goDetail(community.community_id)">
+          <h4 class="con-title">{{ community.community_name }}</h4>
+          <div class="con-memo">
+            <p>{{ community.description }}</p>
+          </div>
+          <button class="join-button" @click="joinCommunity(community.community_id)">
+            加入社区
+          </button>
+        </div>
+      </li>
+      <div class="pagination-block">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1"
+                       :page-sizes="[5, 10, 20, 30]" :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="communityTotal">
+        </el-pagination>
+      </div>
+    </ul>
+  </div>
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
 </template>
 <script setup>
 
 
+<<<<<<< HEAD
 export default {
   name: "communities",
   data(){
@@ -46,6 +84,19 @@ export default {
     };
     return {
       order: "time",
+=======
+import Vue from "vue";
+
+export default {
+  name: "communities",
+  data() {
+    var community = {
+      community_id: 1,
+      community_name: "test",
+      description: "test-community",
+    };
+    return {
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
       communityList: [community],
       pageNumber: 1,
       pageSize: 5,
@@ -54,16 +105,35 @@ export default {
       isSearch: false
     };
   },
+<<<<<<< HEAD
   methods:{
     goDetail(id) {
       this.$router.push({name: "Community", params: {id: id}});
+=======
+  methods: {
+    // eslint-disable-next-line no-unused-vars
+    goDetail(id) {
+      // this.$router.push({name: "Community", params: {id: id}});
+    },
+    handleCurrentChange(val) {
+      this.pageNumber = val;
+      if (!this.isSearch) {
+        this.getCommunityList();
+      } else {
+        this.searchCommunityList();
+      }
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
     },
     handleSizeChange(val) {
       this.pageSize = val;
       if (!this.isSearch) {
         this.getCommunityList();
       } else {
+<<<<<<< HEAD
         this.searchPost();
+=======
+        this.searchCommunityList();
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
       }
     },
     async searchCommunityList() {
@@ -90,6 +160,7 @@ export default {
         console.log(response.message);
       }
     },
+<<<<<<< HEAD
     getCommunityList() {
       this.$axios({
         method: "get",
@@ -98,12 +169,39 @@ export default {
           page: this.pageNumber,
           size: this.pageSize,
           order: this.order,
+=======
+    joinCommunity(communityId) {
+      // 发送加入社区的请求
+      this.$axios.post('/join_community', {'community_id': communityId})
+          .then(response => {
+            if (response.code === 509) {
+              Vue.prototype.$message.error('请勿重复加入社区')
+            } else if (response.code === 1000) {
+              Vue.prototype.$message.info('成功加入社区')
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+    getCommunityList() {
+      this.$axios({
+        method: "get",
+        url: "/get_communities",
+        params: {
+          page: this.pageNumber,
+          size: this.pageSize,
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
         }
       })
           .then(response => {
             if (response.code === 1000) {
               this.communityList = response.data;
               this.communityTotal = response.total_num;
+<<<<<<< HEAD
+=======
+              console.log(this.communityList)
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
             } else {
               console.log(response.msg);
             }
@@ -136,6 +234,10 @@ export default {
   width: 100%;
   padding: 3px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
 .content {
   text-align: left;
   max-width: 100%;
@@ -146,9 +248,36 @@ export default {
   display: block;
   padding: 20px 24px;
   margin-top: 88px;
+<<<<<<< HEAD
   .title{
     text-align: center;
   }
+=======
+
+  .title {
+    text-align: center;
+  }
+
+  .join-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  .join-button:hover {
+    background-color: #45a049;
+  }
+
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
   .c-l-list {
     .c-l-item {
       list-style: none;
@@ -246,6 +375,10 @@ export default {
       }
     }
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
   .c-l-header {
     display: flex;
     flex-grow: 1;

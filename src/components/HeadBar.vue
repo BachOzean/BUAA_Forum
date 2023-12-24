@@ -5,10 +5,6 @@
         <img class="img" src="../assets/images/logo.png" alt="logo"/>
       </div>
       <div class="title">北航树洞</div>
-      <!--      <span class="logo" @click="goIndex">Golang编程论坛</span>-->
-      <!--      <div class="day-of-word">-->
-      <!--        <DayOfWord></DayOfWord>-->
-      <!--      </div>-->
       <div class="collections">
         <div class="icon" @click="goIndex">
           <img class="img" src="../assets/images/home.svg" alt="collection"/>
@@ -16,7 +12,7 @@
         <div class="icon">
           <img class="img" src="../assets/images/calender.svg" alt="collection"/>
         </div>
-        <div class="icon">
+        <div class="icon" @click="goCommunities">
           <img class="img" src="../assets/images/group.svg" alt="collection"/>
         </div>
         <div class="icon">
@@ -26,7 +22,8 @@
       <div class="main-container">
         <div class="image-wrapper">
           <div class="search-text">
-            <input type="text" class="search-text" placeholder="Type here to search..."/>
+            <input type="text" class="search-text" placeholder="Type here to search..." v-model="keyword"
+                   @keyup.enter="searchPost"/>
           </div>
           <img loading="lazy" src="../assets/images/search.svg" alt="search" class="image"/>
         </div>
@@ -67,16 +64,21 @@
 export default {
   name: "HeadBar",
   // components: {DayOfWord},
+  data() {
+    return {
+      keyword: '',
+    }
+  },
   created() {
     this.$store.commit("init");
   },
   mounted() {
-    this.$bus.$on('pageNumber', (value) => {
-      this.pageNumber = value;
-    });
-    this.$bus.$on('pageSize', (value) => {
-      this.pageSize = value;
-    });
+    // this.$bus.$on('pageNumber', (value) => {
+    //   this.pageNumber = value;
+    // });
+    // this.$bus.$on('pageSize', (value) => {
+    //   this.pageSize = value;
+    // });
   },
   computed: {
     isLogin() {
@@ -89,28 +91,8 @@ export default {
   },
   methods: {
     async searchPost() {
-      if (!this.keyword) {
-        this.isSearch = false;
-        this.getPostList();
-        return;
-      }
-      this.isSearch = true;
-      const response = await this.$axios({
-        method: "get",
-        url: "/search",
-        params: {
-          page: this.pageNumber,
-          size: this.pageSize,
-          search: this.keyword
-        }
-      });
-      if (response.code === 1000) {
-        console.log(response.data);
-        this.postList = response.data.list;
-        this.pageTotal = response.data.page;
-      } else {
-        console.log(response.message);
-      }
+      this.$store.commit("search", this.keyword);
+      await this.$router.push({name: "Home"});
     },
     goIndex() {
       this.$router.push({name: "Home"});
@@ -127,6 +109,12 @@ export default {
     },
     goUserInfo() {
       this.$router.push({name: "UserInfor"})
+<<<<<<< HEAD
+=======
+    },
+    goCommunities() {
+      this.$router.push({name: "CommunityPage"})
+>>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
     }
   }
 };
