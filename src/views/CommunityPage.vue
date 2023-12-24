@@ -1,11 +1,11 @@
 <template>
   <div class="content">
-    <h1 class="title">社区列表</h1>
+    <h1 class="title">社团组织</h1>
 
     <div class="c-l-header">
       <div class="search-text-box">
         <div class="search-text">
-          <input type="text" class="search-text" placeholder="请输入社区的关键词" v-model="keyword"
+          <input type="text" class="search-text" placeholder="请输入社团的关键词" v-model="keyword"
                  @keyup.enter="searchCommunityList"/>
         </div>
       </div>
@@ -20,7 +20,7 @@
             <p>{{ community.description }}</p>
           </div>
           <button class="join-button" @click="joinCommunity(community.community_id)">
-            加入社区
+            加入
           </button>
         </div>
 
@@ -29,7 +29,7 @@
           <ul>
             <li v-for="user in community.users" :key="user.user_id">
               {{ user.user_name }}
-              <button @click.stop="followUser(user.user_id)">
+              <button class="follow-button" @click.stop="followUser(user.user_id)">
                 关注
               </button>
             </li>
@@ -456,6 +456,58 @@ export default {
         margin-left: 10px;
       }
     }
+  }
+
+  .l-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .text-container {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+
+  .button-container {
+    flex-shrink: 0;
+  }
+
+  .community-users {
+    margin-left: 20px;
+  }
+
+  .user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .user-info button {
+    margin-left: 10px;
+  }
+
+  .user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px; /* 调整与下一个用户信息之间的间距 */
+  }
+
+  .user-info span {
+    flex-grow: 1; /* 让用户名占满剩余空间 */
+    margin-right: 10px; /* 调整用户名与按钮之间的间距 */
+    font-weight: bold; /* 加粗用户名字体 */
+  }
+
+  .follow-button {
+    background-color: #3498db; /* 设置按钮背景颜色 */
+    color: #fff; /* 设置按钮文字颜色 */
+    padding: 6px 10px; /* 调整按钮内边距 */
+    border: none; /* 移除按钮边框 */
+    border-radius: 4px; /* 圆角按钮 */
+    cursor: pointer; /* 添加手型光标 */
   }
 }
 </style>

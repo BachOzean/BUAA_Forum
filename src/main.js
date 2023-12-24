@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(() => {
-  document.title = "Gophers";
+  document.title = "BUAA Forum";
 })
 
 new Vue({

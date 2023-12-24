@@ -80,7 +80,7 @@ export default {
           academy: this.academy
         }
       }).then((res) => {
-        // this.message = res.message
+        this.message = res.message
         if (res.code == 1000) {
           console.log('signup success');
           this.$router.push({name: "Login"});

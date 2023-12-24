@@ -30,7 +30,7 @@
                 <div class="blog-author--no-cover">
                   <h3>{{ post.user_name }}</h3>
                 </div>
-                <button class="button" @click.stop="onClick">
+                <button class="button" @click.stop="onClick;vote(post.post_id)">
                   <span>🎉</span>
                   <span>点</span>
                   <span>赞</span>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="blog-tags">
                   <ul>
-                    <li><a href="#">{{post.tag_names[0]}}</a></li>
+                    <li><a href="#">{{ post.tag_names[0] }}</a></li>
                   </ul>
                 </div>
               </div>
@@ -143,7 +143,6 @@ export default {
       console.log(event.x / document.documentElement.clientWidth);
       console.log(event.y / 1000);
       confetti(confettiOptions);
-      this.vote();
     },
     selectOrder(order) {
       this.order = order;
@@ -193,19 +192,18 @@ export default {
     goPublish() {
       this.$router.push({name: "Publish"});
     },
-    vote(post_id, direction) {
+    vote(post_id) {
       this.$axios({
         method: "post",
         url: "/vote",
         data: {
           post_id: post_id,
-          direction: direction,
         }
       })
           .then(response => {
             if (response.code == 1000) {
               console.log("vote success");
-              this.getPostDetail();
+              Vue.prototype.$message.success('投票成功');
             } else if (response.code == 1009) {
               Vue.prototype.$message.error('请勿重复投票')
             } else if (response.code == 1010) {
