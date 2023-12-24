@@ -14,7 +14,7 @@
 
     <ul class="c-l-list">
       <li class="c-l-item" v-for="community in communityList" :key="community.community_id">
-        <div class="l-container" @click="goDetail(community.community_id)">
+        <div class="l-container">
           <h4 class="con-title">{{ community.community_name }}</h4>
           <div class="con-memo">
             <p>{{ community.description }}</p>
@@ -22,6 +22,18 @@
           <button class="join-button" @click="joinCommunity(community.community_id)">
             加入社区
           </button>
+        </div>
+
+        <div class="community-users">
+          <h5>成员:</h5>
+          <ul>
+            <li v-for="user in community.users" :key="user.user_id">
+              {{ user.user_name }}
+              <button @click.stop="followUser(user.user_id)">
+                关注
+              </button>
+            </li>
+          </ul>
         </div>
       </li>
       <div class="pagination-block">
@@ -46,6 +58,7 @@ export default {
       community_id: 1,
       community_name: "test",
       description: "test-community",
+      users: []
     };
     return {
       communityList: [community],
@@ -137,6 +150,22 @@ export default {
             console.log(error);
           });
     },
+    followUser(user_id) {
+      this.$axios.post('/add_friendship', {'user2_id': user_id})
+          .then(response => {
+            if (response.code === 1000) {
+
+              Vue.prototype.$message.info("成功关注");
+            } else {
+              console.log(user_id)
+              Vue.prototype.$message.error("关注失败(已关注或用户ID无效)");
+            }
+          })
+          .catch(error => {
+            console.error('Error adding friendship:', error.response.data.error);
+
+          });
+    }
   },
   mounted: function () {
     this.getCommunityList();

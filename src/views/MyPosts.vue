@@ -1,6 +1,7 @@
 <template>
   <div class="columns">
     <div class="content">
+<!--      <h1 class="title">我的帖子</h1>-->
       <div class="center">
         <!-- <h4 class="c-l-title">热门帖子</h4> -->
         <div class="c-l-header">
@@ -164,8 +165,8 @@ export default {
       }
       this.getMyPostList();
     }
-}
-,
+  }
+  ,
 }
 </script>
 
