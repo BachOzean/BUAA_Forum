@@ -3,7 +3,7 @@
     <div class="left">
       <div class="post-name">发帖</div>
       <div class="post-type">
-        <input type="text" class="post-type-value" placeholder="选择标签" v-model="selectTag.tag_name"
+        <input type="text" class="post-type-value" placeholder="选择标签" v-model="selectTagNames"
                @click="showTag()"/>
         <ul class="post-type-options" v-show="showTagList">
           <li class="post-type-cell" v-for="(tag, index) in TagList" :key="tag.tag_id"
@@ -67,7 +67,7 @@ export default {
       title: "",
       content: "",
       showTagList: false,
-      selectTag: {},
+      selectTagNames: [],
       TagList: []
     };
   },
@@ -80,7 +80,7 @@ export default {
           username: this.$store.getters.username,
           title: this.title,
           content: this.content,
-          tag_name: this.selectTag.tag_name,
+          tag_names: this.selectTagNames,
         }
       })
           .then(response => {
@@ -111,7 +111,7 @@ export default {
       this.showTagList = !this.showTagList;
     },
     selected(index) {
-      this.selectTag = this.TagList[index];
+      this.selectTagNames = this.selectTagNames.concat(this.TagList[index].tag_name);
       this.showTagList = false;
     }
   },

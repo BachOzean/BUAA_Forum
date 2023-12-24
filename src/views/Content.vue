@@ -37,7 +37,9 @@
         </div>
         <div class="blog-tags">
           <ul>
-            <li><a href="#">{{ post.tag_names[0] }}</a></li>
+            <li v-for="tag in post.tag_names" :key="tag">
+              <a :href="'#'">{{ tag }}</a>
+            </li>
           </ul>
         </div>
         <div class="blog-content markdown-body" v-html="post.content"

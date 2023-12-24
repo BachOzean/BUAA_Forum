@@ -137,10 +137,11 @@ export default {
       })
           .then(response => {
             if (response.code === 1000) {
-              Vue.prototype.$message.info("密码修改成功")
+              Vue.prototype.$message.success("密码修改成功")
               this.isPasswordModalVisible = false;
               this.infor=true
             } else {
+               Vue.prototype.$message.error("密码验证失败")
               console.log(response.message);
             }
           })

@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="content">
-<!--      <h1 class="title">我的帖子</h1>-->
+      <!--      <h1 class="title">我的帖子</h1>-->
       <div class="center">
         <!-- <h4 class="c-l-title">热门帖子</h4> -->
         <div class="c-l-header">
@@ -11,6 +11,7 @@
                      @keyup.enter="searchMyPost"/>
             </div>
           </div>
+           <div class="publish-btn" @click="searchMyPost">搜索</div>
         </div>
         <ul class="c-l-list">
           <li class="c-l-item" v-for="post in postList" :key="post.post_id">
@@ -19,7 +20,7 @@
                 <div class="blog-author--no-cover">
                   <h3>{{ post.user_name }}</h3>
                 </div>
-                <button class="button" @click.stop="deletePost(post.post_id)">删除</button>
+                <button class="button" @click.stop="deletePost(post.post_id)"  style="white-space: nowrap">删除</button>
               </div>
 
               <div class="blog-body">
@@ -31,7 +32,9 @@
                 </div>
                 <div class="blog-tags">
                   <ul>
-                    <li><a href="#">{{ post.tag_names[0] }}</a></li>
+                    <li v-for="tag in post.tag_names" :key="tag">
+                      <a :href="'#'">{{ tag }}</a>
+                    </li>
                   </ul>
                 </div>
               </div>
