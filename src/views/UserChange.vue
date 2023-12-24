@@ -109,6 +109,8 @@ export default {
             // 请求成功，处理响应
             if (response.code === 409) {
               Vue.prototype.$message.error('新用户名已存在')
+            } else {
+              Vue.prototype.$message.success('修改成功')
             }
           })
           .catch(error => {
@@ -127,9 +129,10 @@ export default {
       })
           .then(response => {
             if (response.code === 1000) {
-              Vue.prototype.$message.info("密码修改成功")
+              Vue.prototype.$message.success("密码修改成功")
               this.isPasswordModalVisible = false;
             } else {
+               Vue.prototype.$message.error("密码验证失败")
               console.log(response.message);
             }
           })
