@@ -46,9 +46,7 @@
                 </div>
                 <div class="blog-tags">
                   <ul>
-                    <li><a href="#">design</a></li>
-                    <li><a href="#">web dev</a></li>
-                    <li><a href="#">css</a></li>
+                    <li><a href="#">{{post.tag_names[0]}}</a></li>
                   </ul>
                 </div>
               </div>
