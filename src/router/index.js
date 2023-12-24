@@ -10,10 +10,8 @@ import SignUp from '../views/SignUp.vue'
 import UserInfor from "@/views/UserInfor.vue";
 import UserChange from "@/views/UserChange.vue";
 import CommunityPage from "@/views/CommunityPage.vue";
-<<<<<<< HEAD
-=======
+import MyPosts from "@/views/MyPosts.vue";
 
->>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err);
@@ -24,57 +22,6 @@ const routes = [{
     path: '/',
     name: 'Home',
     component: Home
-<<<<<<< HEAD
-  },
-  {
-    path: '/post/:id',
-    name: 'Content',
-    component: Content
-  },
-  {
-    path: '/communitypage',
-    name: 'CommunityPage',
-    component: CommunityPage
-  },
-  {
-    path: '/community',
-    name: 'Community',
-    component: Community
-  },
-  {
-    path: '/message',
-    name: 'Message',
-    component: Message
-  },
-  {
-    path: '/publish',
-    name: 'Publish',
-    component: Publish,
-    meta: {
-      requireAuth: false
-    }
-  },
-  {
-    path: '/login',
-    name: "Login",
-    component: Login
-  },
-  {
-    path: '/signup',
-    name: "SignUp",
-    component: SignUp
-  },
-  {
-    path: '/userinfor',
-    name: "UserInfor",
-    component: UserInfor,
-  },
-  {
-    path: '/userchange',
-    name: "UserChange",
-    component: UserChange,
-  }
-=======
 },
     {
         path: '/post/:id',
@@ -126,8 +73,16 @@ const routes = [{
         path: '/communities/',
         name: 'CommunityPage',
         component: CommunityPage
-    }
->>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
+    },
+    {
+        path: '/myposts/',
+        name: 'MyPosts',
+        component: MyPosts,
+        meta: {
+            requireAuth: true
+        }
+    },
+
 ]
 
 const router = new VueRouter({

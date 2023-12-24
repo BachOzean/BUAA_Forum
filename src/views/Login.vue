@@ -10,7 +10,7 @@
           <label>Username</label>
         </div>
         <div class="user-box">
-          <input type="text" v-model="password" required>
+          <input type="password" v-model="password" required>
           <label>Password</label>
         </div>
         <div class="button-container">

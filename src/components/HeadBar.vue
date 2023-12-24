@@ -1,4 +1,5 @@
 <template>
+  <div>
   <header class="header">
     <div class="container">
       <div class="logo-container">
@@ -9,7 +10,7 @@
         <div class="icon" @click="goIndex">
           <img class="img" src="../assets/images/home.svg" alt="collection"/>
         </div>
-        <div class="icon">
+        <div class="icon" @click="goMyPost">
           <img class="img" src="../assets/images/calender.svg" alt="collection"/>
         </div>
         <div class="icon" @click="goCommunities">
@@ -54,6 +55,7 @@
       </div>
     </div>
   </header>
+  </div>
 </template>
 
 <script>
@@ -109,12 +111,12 @@ export default {
     },
     goUserInfo() {
       this.$router.push({name: "UserInfor"})
-<<<<<<< HEAD
-=======
     },
     goCommunities() {
       this.$router.push({name: "CommunityPage"})
->>>>>>> 0f948b5b2f72069802b422e11f2f55643e0c7f31
+    },
+    goMyPost() {
+      this.$router.push({name: "MyPosts"})
     }
   }
 };

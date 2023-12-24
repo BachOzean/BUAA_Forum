@@ -1,5 +1,8 @@
 <template>
-    <el-col :span="12" style="overflow: hidden" class="tac">
+  <div>
+
+
+    <el-col :span="12"  class="tac">
       <el-menu
           class="el-menu-vertical-demo"
           @open="handleOpen"
@@ -7,13 +10,13 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-        <el-menu-item index="1">
+        <el-menu-item index="1" @click="goToMyPosts()">
           <i class="el-icon-location"></i>
           <span slot="title">我的帖子</span>
         </el-menu-item>
         <el-menu-item index="2">
           <i class="el-icon-menu"></i>
-          <span slot="title">我的群组</span>
+          <span slot="title">我的社团</span>
         </el-menu-item>
         <el-menu-item index="3" @click="goToUser()">
           <i class="el-icon-document"></i>
@@ -25,7 +28,7 @@
         </el-menu-item>
       </el-menu>
     </el-col>
-
+  </div>
 
 </template>
 <script>
@@ -42,6 +45,9 @@ export default {
     },
     goToUser(){
       this.$router.push({name: 'UserInfor'})
+    },
+    goToMyPosts(){
+      this.$router.push({name:"MyPosts"})
     }
   }
 }
@@ -50,6 +56,6 @@ export default {
 <style scoped lang="less">
 .tac{
   overflow: hidden;
-  max-width: 350px;
+  max-width: 150px;
 }
 </style>
