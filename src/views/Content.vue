@@ -37,7 +37,7 @@
         </div>
         <div class="blog-tags">
           <ul>
-            <li><a href="#">{{post.tag_names[0]}}</a></li>
+            <li><a href="#">{{ post.tag_names[0] }}</a></li>
           </ul>
         </div>
         <div class="blog-content markdown-body" v-html="post.content"
@@ -59,7 +59,7 @@
           <!--            </svg>-->
           <!--            <span class="numero">1</span></a></li>-->
           <!--        使用assets/images/like.svg作为点赞图标-->
-          <a href="" class="paw-button">
+          <a href="" class="paw-button" @click="vote(post.post_id)">
             <div class="text">
               <svg>
                 <use xlink:href="#heart"></use>
@@ -236,6 +236,7 @@ export default {
           .then(response => {
             if (response.code == 1000) {
               console.log("vote success");
+              Vue.prototype.$message.success('投票成功');
               this.getPostDetail();
             } else if (response.code == 1009) {
               Vue.prototype.$message.error('请勿重复投票')

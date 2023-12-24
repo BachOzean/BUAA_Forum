@@ -13,6 +13,11 @@
           <input type="password" v-model="password" required>
           <label>Password</label>
         </div>
+        <div class="message-container" v-if="this.message !== ''">
+          <div class="message-box">
+            <p>{{ message }}</p>
+          </div>
+        </div>
         <div class="button-container">
           <a href="#" @click.prevent="submit">
             <span></span>
@@ -35,11 +40,13 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      message: ''
     };
   },
   methods: {
@@ -52,6 +59,7 @@ export default {
           password: this.password
         }
       }).then((res) => {
+        this.message = res.message;
         if (res.code == 1000) {
           localStorage.setItem("loginResult", JSON.stringify(res.user));
           this.$store.commit("login", res.user);
@@ -111,6 +119,22 @@ html {
 
 }
 
+.message-container {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #03e9f4; /* 主题颜色 */
+  background-color: rgb(118, 118, 118);
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 5px 1px #03e9f4; /* 内发光效果 */
+}
+
+.message-box {
+  color: #fff;
+  text-align: left;
+}
+
 .page-container {
   margin: 0;
   padding: 0;
@@ -140,7 +164,7 @@ html {
 
 .login-box .user-box {
   position: relative;
-  font-family: "Poppins",system-ui;
+  font-family: "Poppins", system-ui;
 }
 
 .login-box .user-box input {

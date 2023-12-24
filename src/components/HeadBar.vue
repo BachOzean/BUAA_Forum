@@ -16,7 +16,7 @@
         <div class="icon" @click="goCommunities">
           <img class="img" src="../assets/images/group.svg" alt="collection"/>
         </div>
-        <div class="icon">
+        <div class="icon" @click="goPublish">
           <img class="img" src="../assets/images/interviews.svg" alt="collection"/>
         </div>
       </div>
@@ -33,11 +33,6 @@
         <div class="icon-wrapper">
           <div class="image-wrapper">
             <img loading="lazy" src="../assets/images/notifications.svg" alt="notification" class="image"/>
-          </div>
-        </div>
-        <div class="icon-wrapper">
-          <div class="image-wrapper">
-            <img loading="lazy" src="../assets/images/message.svg" alt="message" class="image"/>
           </div>
         </div>
       </div>
@@ -117,6 +112,9 @@ export default {
     },
     goMyPost() {
       this.$router.push({name: "MyPosts"})
+    },
+    goPublish() {
+      this.$router.push({name: "Publish"})
     }
   }
 };
