@@ -42,7 +42,7 @@
                   <h1><a href="#">{{ post.title }}</a></h1>
                 </div>
                 <div class="blog-summary">
-                  <p>{{post.content}} </p>
+                  <p>{{ post.content }} </p>
                 </div>
                 <div class="blog-tags">
                   <ul>
@@ -120,6 +120,15 @@ export default {
       isSearch: false
     };
   },
+  created() {
+    if (this.$store.state.isSearch) {
+      this.keyword = this.$store.state.keyword;
+      this.$store.state.isSearch = false;
+      this.searchPost();
+    } else {
+      this.getPostList();
+    }
+  },
   methods: {
     onClick(event) {
       // const button = document.querySelector('.button');
@@ -130,12 +139,13 @@ export default {
         spread: 60,
         origin: {
           x: event.x / document.documentElement.clientWidth,
-          y: event.y /  900
+          y: event.y / 900
         }
       };
       console.log(event.x / document.documentElement.clientWidth);
-      console.log(event.y /  1000);
+      console.log(event.y / 1000);
       confetti(confettiOptions);
+      this.vote();
     },
     selectOrder(order) {
       this.order = order;
@@ -197,7 +207,7 @@ export default {
           .then(response => {
             if (response.code == 1000) {
               console.log("vote success");
-              this.getPostList();
+              this.getPostDetail();
             } else if (response.code == 1009) {
               Vue.prototype.$message.error('请勿重复投票')
             } else if (response.code == 1010) {
@@ -235,9 +245,6 @@ export default {
         console.log(response.message);
       }
     },
-  },
-  mounted: function () {
-    this.getPostList();
   },
   computed: {
     timeOrder() {
