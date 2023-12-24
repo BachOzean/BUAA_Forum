@@ -121,7 +121,8 @@ export default {
             if (response.code === 509) {
               Vue.prototype.$message.error('请勿重复加入社区')
             } else if (response.code === 1000) {
-              Vue.prototype.$message.info('成功加入社区')
+              Vue.prototype.$message.success('成功加入社区')
+              this.getCommunityList();
             }
           })
           .catch(error => {
@@ -155,10 +156,10 @@ export default {
           .then(response => {
             if (response.code === 1000) {
 
-              Vue.prototype.$message.info("成功关注");
+              Vue.prototype.$message.success("成功关注");
             } else {
               console.log(user_id)
-              Vue.prototype.$message.error("关注失败(已关注或用户ID无效)");
+              Vue.prototype.$message.error("关注失败");
             }
           })
           .catch(error => {
