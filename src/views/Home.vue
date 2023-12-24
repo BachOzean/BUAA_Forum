@@ -322,7 +322,7 @@ button {
 
 .blog-author h3::before,
 .blog-author--no-cover h3::before {
-  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/17779/russ.jpeg");
+  background: url(https://s2.loli.net/2023/12/24/e8GYzbhS7cwyRCm.png);
   background-size: cover;
   border-radius: 50%;
   content: " ";
