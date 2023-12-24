@@ -45,6 +45,8 @@
           <span class="user" @click="goUserInfo">{{ currUsername }}</span>
           <div class="dropdown-content">
             <a @click="goLogout">登出</a>
+            <a @click="goMyPost">我的发帖</a>
+            <a @click="goUserInfo">个人信息</a>
           </div>
         </div>
       </div>
