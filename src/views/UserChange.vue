@@ -117,6 +117,8 @@ export default {
             // 请求成功，处理响应
             if (response.code === 409) {
               Vue.prototype.$message.error('新用户名已存在')
+            }else{
+              Vue.prototype.$message.success('信息修改成功')
             }
           })
           .catch(error => {
