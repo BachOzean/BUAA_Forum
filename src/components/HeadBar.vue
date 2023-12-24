@@ -1,4 +1,5 @@
 <template>
+  <div>
   <header class="header">
     <div class="container">
       <div class="logo-container">
@@ -49,6 +50,7 @@
       </div>
     </div>
   </header>
+  </div>
 </template>
 
 <script>

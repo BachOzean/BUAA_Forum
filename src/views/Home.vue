@@ -488,6 +488,7 @@ button {
   justify-content: space-between;
   gap: 20px;
   width: 300px;
+  height: 40px;
 }
 
 .search-text {

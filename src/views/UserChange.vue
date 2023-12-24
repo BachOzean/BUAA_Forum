@@ -1,10 +1,14 @@
 <template>
-  <div class="content">
+  <div>
+    <left-rail></left-rail>
+
+  <div class="content" v-show="infor">
+
     <el-form :inline="true" :model="formInline" class="form">
       <el-row>
         <el-col>
           <el-form-item label="用户名">
-            <el-input v-model="formInline.user_name" type="text"></el-input>
+            <el-input v-model="formInline.user_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -37,6 +41,7 @@
     <el-button slot="reference" class="password" @click="showPasswordModal()">
       修改密码
     </el-button>
+  </div>
     <div class="modal" v-show="isPasswordModalVisible">
       <el-form>
         <el-row>
@@ -62,20 +67,23 @@
       </el-form>
     </div>
 
-
   </div>
+
 
 </template>
 
 <script setup>
 import Vue from "vue";
+import LeftRail from "@/components/LeftRail.vue";
 
 export default {
 
   name: "dataForUser",
+  components:{LeftRail},
   data() {
     return {
       isPasswordModalVisible: false,
+      infor:true,
       oldPassword: "",
       newPassword: "",
       formInline: {
@@ -131,6 +139,7 @@ export default {
             if (response.code === 1000) {
               Vue.prototype.$message.success("密码修改成功")
               this.isPasswordModalVisible = false;
+              this.infor=true
             } else {
                Vue.prototype.$message.error("密码验证失败")
               console.log(response.message);
@@ -142,9 +151,11 @@ export default {
     },
     showPasswordModal() {
       this.isPasswordModalVisible = true;
+      this.infor=false
     },
     hidePasswordModal() {
       this.isPasswordModalVisible = false;
+      this.infor=true
     },
   },
   mounted: function () {
@@ -158,20 +169,19 @@ export default {
   text-align: left;
   max-width: 100%;
   box-sizing: border-box;
-  flex-direction: row;
+  //flex-direction: row;
   justify-content: center;
   margin: 0 auto;
   display: block;
   padding: 20px 24px;
   margin-top: 88px;
-  background: #6190E8;
+  background: #b9b9b9;
   max-width: 600px;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #6190E8, #A7BFE8);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #6190E8, #A7BFE8);
   align-items: center;
   margin-left: 500px;
+  border-radius: 5px;
 
   .form {
     display: block;
@@ -196,5 +206,20 @@ export default {
   }
 
 
+}
+.modal{
+  text-align: left;
+  box-sizing: border-box;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 auto;
+  display: block;
+  padding: 20px 24px;
+  margin-top: 88px;
+  background: #b9b9b9;
+  max-width: 600px;
+  align-items: center;
+  margin-left: 500px;
+  border-radius: 5px;
 }
 </style>
