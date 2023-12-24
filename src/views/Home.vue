@@ -2,12 +2,14 @@
   <div class="columns">
     <div class="content">
       <div class="left">
-        <SideBar></SideBar>
+        <div class="side1">
+          <img class="img" src="../assets/images/side1.png" alt="logo"/>
+        </div>
+        <div class="side2">
+          <img class="img" src="../assets/images/side2.png" alt="logo"/>
+        </div>
       </div>
       <div class="center">
-        <!-- <h4 class="c-l-title">热门帖子</h4> -->
-
-
         <div class="c-l-header">
           <div class="new btn-iconfont" :class="{ active: timeOrder }" @click="selectOrder('time')">
             <i class="iconfont icon-polygonred"></i>New
@@ -61,32 +63,17 @@
           </div>
         </ul>
       </div>
-      <div class="right">
-        <div class="run-time-container">
-          <TimeMeter></TimeMeter>
-        </div>
-        <div class="github-project-card-container">
-          <GithubProjectCard language="all"></GithubProjectCard>
-        </div>
-        <div class="github-golang-project-card-container">
-          <GithubProjectCard language="golang" title="Golang热门项目排行榜"></GithubProjectCard>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import SideBar from '../components/SideBar.vue';
 // @ is an alias to /src
-import TimeMeter from '../components/TimeMeter.vue';
-import GithubProjectCard from './components/GithubProjectCard.vue';
 import Vue from 'vue';
 import confetti from 'canvas-confetti';
 
 export default {
   name: "Home",
-  components: {TimeMeter, SideBar, GithubProjectCard},
   data() {
     var post1 = {
       post_id: 1,
@@ -533,6 +520,14 @@ button {
     margin-top: 20px;
     background: var(--Dark-3, #262d34);
     border-radius: 6px;
+  }
+
+
+  .img {
+    max-width: 100%; /* Ensure the image doesn't exceed its natural size */
+    height: fit-content; /* Maintain the image's aspect ratio */
+    display: block; /* Remove any extra spacing below the image */
+    margin: 0 auto; /* Center the image horizontally within its container */
   }
 
   .center {
