@@ -1,27 +1,15 @@
 <template>
   <div class="columns">
     <div class="content">
-      <div class="left">
-        <SideBar></SideBar>
-      </div>
       <div class="center">
         <!-- <h4 class="c-l-title">热门帖子</h4> -->
-
-
         <div class="c-l-header">
-          <div class="new btn-iconfont" :class="{ active: timeOrder }" @click="selectOrder('time')">
-            <i class="iconfont icon-polygonred"></i>New
-          </div>
-          <div class="top btn-iconfont" :class="{ active: scoreOrder }" @click="selectOrder('score')">
-            <i class="iconfont icon-top"></i>Score
-          </div>
           <div class="search-text-box">
             <div class="search-text">
               <input type="text" class="search-text" placeholder="请输入帖子的关键词" v-model="keyword"
-                     @keyup.enter="searchPost"/>
+                     @keyup.enter="searchMyPost"/>
             </div>
           </div>
-          <div class="publish-btn" @click="goPublish">发表</div>
         </div>
         <ul class="c-l-list">
           <li class="c-l-item" v-for="post in postList" :key="post.post_id">
@@ -30,11 +18,7 @@
                 <div class="blog-author--no-cover">
                   <h3>{{ post.user_name }}</h3>
                 </div>
-                <button class="button" @click.stop="onClick">
-                  <span>🎉</span>
-                  <span>点</span>
-                  <span>赞</span>
-                </button>
+                <button class="button" @click.stop="deletePost(post.post_id)">删除</button>
               </div>
 
               <div class="blog-body">
@@ -46,7 +30,7 @@
                 </div>
                 <div class="blog-tags">
                   <ul>
-                    <li><a href="#">{{post.tag_names[0]}}</a></li>
+                    <li><a href="#">{{ post.tag_names[0] }}</a></li>
                   </ul>
                 </div>
               </div>
@@ -61,32 +45,14 @@
           </div>
         </ul>
       </div>
-      <div class="right">
-        <div class="run-time-container">
-          <TimeMeter></TimeMeter>
-        </div>
-        <div class="github-project-card-container">
-          <GithubProjectCard language="all"></GithubProjectCard>
-        </div>
-        <div class="github-golang-project-card-container">
-          <GithubProjectCard language="golang" title="Golang热门项目排行榜"></GithubProjectCard>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
-<script>
-import SideBar from '../components/SideBar.vue';
-// @ is an alias to /src
-import TimeMeter from '../components/TimeMeter.vue';
-import GithubProjectCard from './components/GithubProjectCard.vue';
-import Vue from 'vue';
-import confetti from 'canvas-confetti';
+<script setup>
 
 export default {
-  name: "Home",
-  components: {TimeMeter, SideBar, GithubProjectCard},
+  name: "MyPosts",
   data() {
     var post1 = {
       post_id: 1,
@@ -119,63 +85,35 @@ export default {
     };
   },
   created() {
-    if (this.$store.state.isSearch) {
-      this.keyword = this.$store.state.keyword;
-      this.$store.state.isSearch = false;
-      this.searchPost();
-    } else {
-      this.getPostList();
-    }
+    this.getMyPostList();
   },
   methods: {
-    onClick(event) {
-      // const button = document.querySelector('.button');
-      // const buttonRect = button.getBoundingClientRect();
-
-      const confettiOptions = {
-        particleCount: 100,
-        spread: 60,
-        origin: {
-          x: event.x / document.documentElement.clientWidth,
-          y: event.y / 900
-        }
-      };
-      console.log(event.x / document.documentElement.clientWidth);
-      console.log(event.y / 1000);
-      confetti(confettiOptions);
-      this.vote();
-    },
-    selectOrder(order) {
-      this.order = order;
-      this.getPostList();
-    },
     handleCurrentChange(val) {
       this.pageNumber = val;
       if (!this.isSearch) {
-        this.getPostList();
+        this.getMyPostList();
       } else {
-        this.searchPost();
+        this.searchMyPost();
       }
     },
     handleSizeChange(val) {
       this.pageSize = val;
       if (!this.isSearch) {
-        this.getPostList();
+        this.getMyPostList();
       } else {
-        this.searchPost();
+        this.searchMyPost();
       }
     },
     goDetail(id) {
       this.$router.push({name: "Content", params: {id: id}});
     },
-    getPostList() {
+    getMyPostList() {
       this.$axios({
         method: "get",
-        url: "/get_posts",
+        url: "/get_myposts",
         params: {
           page: this.pageNumber,
           size: this.pageSize,
-          order: this.order,
         }
       })
           .then(response => {
@@ -190,45 +128,16 @@ export default {
             console.log(error);
           });
     },
-    goPublish() {
-      this.$router.push({name: "Publish"});
-    },
-    vote(post_id, direction) {
-      this.$axios({
-        method: "post",
-        url: "/vote",
-        data: {
-          post_id: post_id,
-          direction: direction,
-        }
-      })
-          .then(response => {
-            if (response.code == 1000) {
-              console.log("vote success");
-              this.getPostDetail();
-            } else if (response.code == 1009) {
-              Vue.prototype.$message.error('请勿重复投票')
-            } else if (response.code == 1010) {
-              Vue.prototype.$message.error('已过投票时间')
-            } else {
-              console.log(response.msg);
-              Vue.prototype.$message.error('请先登录')
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-    },
-    async searchPost() {
+    async searchMyPost() {
       if (!this.keyword) {
         this.isSearch = false;
-        this.getPostList();
+        this.getMyPostList();
         return;
       }
       this.isSearch = true;
       const response = await this.$axios({
         method: "get",
-        url: "/search_post",
+        url: "/search_mypost",
         params: {
           page: this.pageNumber,
           size: this.pageSize,
@@ -243,16 +152,21 @@ export default {
         console.log(response.message);
       }
     },
-  },
-  computed: {
-    timeOrder() {
-      return this.order == "time";
-    },
-    scoreOrder() {
-      return this.order == "score";
+    // eslint-disable-next-line no-unused-vars
+    async deletePost(post_id) {
+      const response = await this.$axios.post(`/delete_post/${post_id}`);
+      // 根据后端返回的数据进行处理
+      if (response.code === 1000) {
+        console.log('帖子删除成功');
+        // 刷新帖子列表或进行其他操作
+      } else {
+        console.error('帖子删除失败');
+      }
+      this.getMyPostList();
     }
-  }
-};
+}
+,
+}
 </script>
 
 <style scoped lang="less">

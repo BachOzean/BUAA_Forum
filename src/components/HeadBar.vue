@@ -9,7 +9,7 @@
         <div class="icon" @click="goIndex">
           <img class="img" src="../assets/images/home.svg" alt="collection"/>
         </div>
-        <div class="icon">
+        <div class="icon" @click="goMyPost">
           <img class="img" src="../assets/images/calender.svg" alt="collection"/>
         </div>
         <div class="icon" @click="goCommunities">
@@ -112,6 +112,9 @@ export default {
     },
     goCommunities() {
       this.$router.push({name: "CommunityPage"})
+    },
+    goMyPost() {
+      this.$router.push({name: "MyPosts"})
     }
   }
 };

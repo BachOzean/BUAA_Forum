@@ -10,6 +10,7 @@ import SignUp from '../views/SignUp.vue'
 import UserInfor from "@/views/UserInfor.vue";
 import UserChange from "@/views/UserChange.vue";
 import CommunityPage from "@/views/CommunityPage.vue";
+import MyPosts from "@/views/MyPosts.vue";
 
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
@@ -72,7 +73,16 @@ const routes = [{
         path: '/communities/',
         name: 'CommunityPage',
         component: CommunityPage
-    }
+    },
+    {
+        path: '/myposts/',
+        name: 'MyPosts',
+        component: MyPosts,
+        meta: {
+            requireAuth: true
+        }
+    },
+
 ]
 
 const router = new VueRouter({
