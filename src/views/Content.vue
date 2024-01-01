@@ -154,7 +154,7 @@
       <!-- Contenedor Principal -->
       <div class="comments-container">
         <ul id="comments-list" class="comments-list">
-          <li v-for="comment in post.comments" :key="comment.comment_id">
+          <li v-for="(comment , commentIndex) in post.comments" :key="commentIndex">
             <div class="comment-main-level">
               <!-- Avatar -->
               <div class="comment-avatar">
@@ -176,7 +176,7 @@
                   {{ comment.content }}
                 </div>
                 <div v-if="comment.showReplyInput" class="reply-container">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-input v-model="comment.input" placeholder="请输入内容"></el-input>
                   <i class="fas fa-paper-plane" @click="submitReply(commentIndex)"></i>
                 </div>
               </div>
@@ -219,7 +219,6 @@ export default {
   // components: { Comment },
   data() {
     return {
-      showReplyInput: false,
       comment_content: '',
       post: {
         post_id: 0,
@@ -245,6 +244,7 @@ export default {
             timestamp: "comment 44 minutes",
             content: "无知时诋毁原神，懂事时理解原神，成熟时要成为原友！越了解原神就会把它当成在黑夜一望无际的大海上给迷途的船只指引的灯塔，在烈日炎炎的夏天吹来的一股风，在寒风刺骨的冬天里的燃起的篝火！",
             showReplyInput: false,
+            input: '',
             replies: [
               {
                 avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg",
@@ -296,83 +296,77 @@ export default {
       console.log(commentIndex);
 
     },
-    submitReply(commentIndex) {
-      // 处理发表回复的逻辑
-      // 可以在这里获取输入框中的内容，并执行相应的操作
-      // 例如，将回复内容添加到评论列表中或发送给服务器等
-      // 处理完逻辑后，可以重置输入框并隐藏回复输入框
-      console.log(commentIndex);
+    async submitReply(commentIndex) {
+      const data = {
+        'content': this.post.comments[commentIndex].input,
+        'to_id': this.post.comments[commentIndex].comment_id
+      };
+      const response = await this.$axios.post("/send_secondary_comment", data);
+      if (response.code === 1000) {
+        this.$message.success("回复发送成功");
+      } else {
+        this.$message.error("回复失败");
+      }
       this.post.comments[commentIndex].showReplyInput = false;
+      this.getCommentsForPost();
     },
-    getPostDetail() {
+    async getPostDetail() {
+      const response = await this.$axios({
+        method: "get",
+        url: "/posts/" + this.$route.params.id,
+      });
+
+      if (response.code === 1000) {
+        let MarkdownIt = require('markdown-it');
+        let md = new MarkdownIt();
+        this.post = response.post;
+        this.post.content = md.render(this.post.content);
+        console.log(this.post);
+      } else {
+        console.log(response.message);
+      }
+      this.getCommentsForPost();
+    },
+    vote(post_id) {
       this.$axios({
-
-        async getPostDetail() {
-          const response = await this.$axios({
-            method: "get",
-            url: "/posts/" + this.$route.params.id,
-          });
-
-          if (response.code === 1000) {
-            let MarkdownIt = require('markdown-it');
-            let md = new MarkdownIt();
-            this.post = response.post;
-            this.post.content = md.render(this.post.content);
-            console.log(this.post);
-          } else {
-            console.log(response.message);
-          }
-          this.getCommentsForPost();
-        },
-        vote(post_id) {
-          this.$axios({
-            method: "post",
-            url: "/vote",
-            data: {
-              post_id: post_id,
-            }
-          })
-              .then(response => {
-                if (response.code == 1000) {
-                  console.log("vote success");
-                  Vue.prototype.$message.success('投票成功');
-                  this.getPostDetail();
-                } else if (response.code == 1009) {
-                  Vue.prototype.$message.error('请勿重复投票')
-                } else if (response.code == 1010) {
-                  Vue.prototype.$message.error('已过投票时间')
-                } else {
-                  console.log(response.msg);
-                  Vue.prototype.$message.error('请先登录')
-                }
-              })
-              .catch(error => {
-                console.log(error);
-              });
-        },
-        goCommunityDetail(community_id) {
-          this.$router.push({
-            name: 'Community',
-            params: {
-              id: community_id
-            }
-          });
-        },
-        getCommentsForPost() {
-          this.$axios.post('/comments', {post_id: this.post.post_id})
-              .then(response => {
-                if (response.code !== 1000) {
-                  console.log('获取一级评论列表失败');
-                } else {
-                  this.post.comments = response.comments;
-                  console.log(this.post.comments);
-                }
-              })
-              .catch(error => {
-                console.error('Error getting comments for post:', error);
-              });
+        method: "post",
+        url: "/vote",
+        data: {
+          post_id: post_id,
         }
       })
+          .then(response => {
+            if (response.code == 1000) {
+              console.log("vote success");
+              Vue.prototype.$message.success('投票成功');
+              this.getPostDetail();
+            } else if (response.code == 1009) {
+              Vue.prototype.$message.error('请勿重复投票')
+            } else if (response.code == 1010) {
+              Vue.prototype.$message.error('已过投票时间')
+            } else {
+              console.log(response.msg);
+              Vue.prototype.$message.error('请先登录')
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+    getCommentsForPost() {
+      this.$axios.post('/comments', {post_id: this.post.post_id})
+          .then(response => {
+            if (response.code !== 1000) {
+              console.log('获取评论列表失败');
+            } else {
+              this.post.comments = response.comments;
+
+              console.log(this.post.comments);
+            }
+          })
+          .catch(error => {
+            console.error('Error getting comments for post:', error);
+          });
     }
   },
 

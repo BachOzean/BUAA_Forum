@@ -1,41 +1,41 @@
 <template>
   <div>
-  <header class="header">
-    <div class="container">
-      <div class="logo-container">
-        <img class="img" src="../assets/images/logo.png" alt="logo"/>
-      </div>
-      <div class="title">北航树洞</div>
-      <div class="collections">
-        <div class="icon" @click="goIndex">
-          <img class="img" src="../assets/images/home.svg" alt="collection"/>
+    <header class="header">
+      <div class="container">
+        <div class="logo-container">
+          <img class="img" src="../assets/images/logo.png" alt="logo"/>
         </div>
-        <div class="icon" @click="goMyPost">
-          <img class="img" src="../assets/images/calender.svg" alt="collection"/>
-        </div>
-        <div class="icon" @click="goCommunities">
-          <img class="img" src="../assets/images/group.svg" alt="collection"/>
-        </div>
-        <div class="icon" @click="goPublish">
-          <img class="img" src="../assets/images/interviews.svg" alt="collection"/>
-        </div>
-      </div>
-      <div class="main-container">
-        <div class="image-wrapper">
-          <div class="search-text">
-            <input type="text" class="search-text" placeholder="Type here to search..." v-model="keyword"
-                   @keyup.enter="searchPost"/>
+        <div class="title">北航树洞</div>
+        <div class="collections">
+          <div class="icon" @click="goIndex">
+            <img class="img" src="../assets/images/home.svg" alt="collection"/>
           </div>
-          <img loading="lazy" src="../assets/images/search.svg" alt="search" class="image"/>
+          <div class="icon" @click="goMyPost">
+            <img class="img" src="../assets/images/calender.svg" alt="collection"/>
+          </div>
+          <div class="icon" @click="goCommunities">
+            <img class="img" src="../assets/images/group.svg" alt="collection"/>
+          </div>
+          <div class="icon" @click="goPublish">
+            <img class="img" src="../assets/images/interviews.svg" alt="collection"/>
+          </div>
         </div>
-      </div>
-      <div class="personal-info">
-        <div class="icon-wrapper">
+        <div class="main-container">
           <div class="image-wrapper">
-            <img loading="lazy" src="../assets/images/notifications.svg" alt="notification" class="image"/>
+            <div class="search-text">
+              <input type="text" class="search-text" placeholder="Type here to search..." v-model="keyword"
+                     @keyup.enter="searchPost"/>
+            </div>
+            <img loading="lazy" src="../assets/images/search.svg" alt="search" class="image"/>
           </div>
         </div>
-      </div>
+        <div class="personal-info">
+          <div class="icon-wrapper">
+            <div class="image-wrapper">
+              <img loading="lazy" src="../assets/images/notifications.svg" alt="notification" class="image"/>
+            </div>
+          </div>
+        </div>
       <div class="btns">
         <div v-show="!isLogin">
           <a class="login-btn" @click="goLogin">登录</a>
@@ -119,8 +119,25 @@ export default {
     goPublish() {
       this.$router.push({name: "Publish"})
     },
-    goToMyCommunity(){
-      this.$router.push({name:"MyCommunity"})
+    goToMyCommunity() {
+      this.$router.push({name: "MyCommunity"})
+    },
+    logout() {
+      const isConfirmed = window.confirm('确认注销');
+      if (isConfirmed) {
+        this.$axios.post('/logout')  // Replace with your actual logout endpoint
+            .then(response => {
+              if (response.code === 1000) {
+                this.$message.success("注销成功")
+                this.goLogout()
+              } else {
+                this.$message.error("注销失败")
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            });
+      }
     }
   }
 };
