@@ -1,14 +1,15 @@
 <template>
   <div class="box">
     <div class="div">
-      <div class="div-2">关注的社区</div>
+      <div class="div-2">热门社团</div>
       <img loading="lazy" src="..\assets\images\arrow.png" class="img"
       />
     </div>
     <div class="community-box" v-for="(community, index) in communities" :key="index">
-<!--      <img loading="lazy" :src="community.imageUrl" class="community-image" alt=""/>-->
+      <!--      <img loading="lazy" :src="community.imageUrl" class="community-image" alt=""/>-->
       <div class="div-4">
-        <div class="div-5">{{community.name}}</div>
+        <div class="div-5">{{ community.name }}</div>
+        <div class="cnt">社团人数: {{ community.user_count }}</div>
       </div>
     </div>
 
@@ -21,22 +22,40 @@ export default {
       communities: [
         {
           name: "篮球社团",
+          user_count: 10,
           imageUrl: "../assets/images/basketball.png"
         },
         {
           name: "唱跳社团",
+          user_count: 10,
           imageUrl: "../assets/images/sing.png"
         },
         {
           name: "Rap社团",
+          user_count: 10,
           imageUrl: "../assets/images/rap.png"
         },
         {
           name: "数据库小组",
+          user_count: 10,
           imageUrl: "../assets/images/database.png"
         }
       ]
     };
+  },
+  methods: {
+    async getHotCommunity() {
+      const response = await this.$axios.get("/top_communities")
+      if (response.code !== 1000) {
+        console.log(response)
+      } else {
+        this.communities = response.top_communities
+        console.log(this.communities)
+      }
+    }
+  },
+  mounted() {
+    this.getHotCommunity()
   }
 };
 </script>
@@ -114,6 +133,17 @@ export default {
   white-space: nowrap;
   font: 400 20px/20px Source Sans Pro, -apple-system, Roboto, Helvetica,
   sans-serif;
+}
+
+.cnt {
+  color: var(--Secondary-Color-Secondary-3, #97989D);
+
+  /* Regular 10 */
+  font-family: Source Sans Pro;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 160% */
 }
 
 @media (max-width: 312px) {

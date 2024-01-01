@@ -6,10 +6,10 @@
     <div class="tag-box" v-for="(tag, index) in tags" :key="index">
       <!--      <img loading="lazy" :src="community.imageUrl" class="community-image" alt=""/>-->
       <div class="div-4">
-        <div class="div-5">{{tag.name}}</div>
+        <div class="div-5">{{ tag.name }}</div>
         <div class="tag-count">
-          <div class="tag-count-number">{{tag.count}}</div>
-          <div class="tag-count-text">个帖子在标签下</div>
+          <div class="tag-count-number">{{ tag.count }}</div>
+          <div class="tag-count-text">个帖子在该标签下</div>
         </div>
       </div>
     </div>
@@ -39,6 +39,19 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    async getTopTags() {
+      const response = await this.$axios.get("/top_tags")
+      if (response.code !== 1000) {
+        console.log(response)
+      } else {
+        this.tags = response.top_tags;
+      }
+    }
+  },
+  mounted() {
+    this.getTopTags()
   }
 };
 </script>
@@ -95,13 +108,15 @@ export default {
   justify-content: space-between;
   gap: 10px;
 }
-.tag-count{
+
+.tag-count {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
   white-space: nowrap;
 }
-.tag-count-number{
+
+.tag-count-number {
   color: var(--Secondary-Color-Secondary-3, #97989D);
 
   /* Regular 10 */
@@ -111,7 +126,8 @@ export default {
   font-weight: 400;
   line-height: 20px; /* 160% */
 }
-.tag-count-text{
+
+.tag-count-text {
   color: var(--Secondary-Color-Secondary-3, #97989D);
 
   /* Regular 10 */
@@ -121,6 +137,7 @@ export default {
   font-weight: 400;
   line-height: 20px; /* 160% */
 }
+
 .community-image {
   aspect-ratio: 1;
   object-fit: contain;
