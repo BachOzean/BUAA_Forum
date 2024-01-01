@@ -141,10 +141,10 @@
         <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="new_comment">
+            placeholder="请输入评论"
+            v-model="comment_content">
         </el-input>
-        <div class="publish-btn" @click="goPublish">
+        <div class="publish-btn" @click="sendComment">
           发送
         </div>
       </div>
@@ -202,40 +202,6 @@
       </div>
 
     </div>
-
-
-    <!--    <div class="left">-->
-    <!--      <div class="container">-->
-    <!--        <div class="post">-->
-    <!--          <a class="vote">-->
-    <!--            <span class="iconfont icon-up" @click="vote(post.post_id, 1)"></span>-->
-    <!--          </a>-->
-    <!--          <span class="text">{{ post.vote_num }}</span>-->
-    <!--          <a class="vote">-->
-    <!--            <span class="iconfont icon-down" @click="vote(post.post_id, -1)"></span>-->
-    <!--          </a>-->
-    <!--        </div>-->
-    <!--        <div class="l-container">-->
-    <!--          <h4 class="con-title">{{ post.title }}</h4>-->
-    <!--          <div class="con-info markdown-body" v-html="post.content"></div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      &lt;!&ndash; 评论区 &ndash;&gt;-->
-    <!--      <Comment :sourceId="this.$route.params.id"></Comment>-->
-    <!--    </div>-->
-    <!--    <div class="right">-->
-    <!--      <div class="topic-info">-->
-    <!--        <h5 class="t-header"></h5>-->
-    <!--        <div class="t-info">-->
-    <!--          <a class="avatar"></a>-->
-    <!--          <span class="topic-name">b/{{ post.community.community_name }}</span>-->
-    <!--        </div>-->
-    <!--        <p class="t-desc">{{ post.community.introduction }}</p>-->
-    <!--        <p class="t-create-time">{{ post.community.create_time }}</p>-->
-    <!--        <div class="date">{{ create_time }}</div>-->
-    <!--        <button class="topic-btn" @click="goCommunityDetail(post.community.community_id)">JOIN</button>-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
 </template>
 <script>
@@ -247,6 +213,7 @@ export default {
   // components: { Comment },
   data() {
     return {
+      comment_content: '',
       post: {
         post_id: 0,
         title: '11111111111',
@@ -297,11 +264,27 @@ export default {
           }
         ]
       },
+      comment_list: ''
     }
   },
 
   methods: {
+    async sendComment() {
+      const response = await this.$axios.post(
+          '/post_comment',
+          {
+            content: this.comment_content,
+            to_post_id: this.post.post_id,
+          },
+      );
 
+      if (response.code === 1000) {
+        this.$message.success('评论发送成功');
+        this.comment_content = '';
+      } else {
+        this.$message.error('评论失败');
+      }
+    },
     getPostDetail() {
       this.$axios({
         method: "get",
@@ -356,6 +339,7 @@ export default {
         }
       });
     },
+
   },
   mounted() {
     this.getPostDetail();
