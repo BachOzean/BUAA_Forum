@@ -2,12 +2,7 @@
   <div class="columns">
     <div class="content">
       <div class="left">
-        <div class="side1">
-          <img class="img" src="../assets/images/side1.png" alt="logo"/>
-        </div>
-        <div class="side2">
-          <img class="img" src="../assets/images/side2.png" alt="logo"/>
-        </div>
+        <LeftOne></LeftOne>
       </div>
       <div class="center">
         <div class="c-l-header">
@@ -73,9 +68,11 @@
 // @ is an alias to /src
 import Vue from 'vue';
 import confetti from 'canvas-confetti';
+import LeftOne from "@/components/LeftOne.vue";
 
 export default {
   name: "Home",
+  components: {LeftOne},
   data() {
     var post1 = {
       post_id: 1,
@@ -518,7 +515,7 @@ button {
 
 
   .left {
-    width: 312px;
+    width: 255px;
     height: fit-content;
     margin-top: 20px;
     background: var(--Dark-3, #262d34);
