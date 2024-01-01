@@ -42,16 +42,20 @@
         <div class="l-container">
           <h4 class="con-title">{{ community.community_name }}</h4>
           <div class="con-memo">
-            <p>{{ community.description }}</p>
+            <p class="con-description">{{ community.description }}</p>
           </div>
-          <button class="join-button" @click="joinCommunity(community.community_id)">
-            加入
-          </button>
+          <div class="action-buttons">
+            <button class="join-button" @click="joinCommunity(community.community_id)">
+              加入
+            </button>
+            <button class="leave-button" @click="leaveCommunity(community.community_id)">
+              退出
+            </button>
+          </div>
         </div>
 
-        <!-- 将成员列表改为横向排列 -->
         <div class="community-users">
-          <h5>成员:</h5>
+          <h5 class="users_title">成员:</h5>
           <ul class="horizontal-user-list">
             <li v-for="user in community.users" :key="user.user_id" class="horizontal-user-item">
               {{ user.user_name }}
@@ -94,9 +98,13 @@ export default {
       keyword: '',
       isSearch: false,
       dialogVisible: false,
-      newcommunity:{
+      newcommunity: {
         community_name: "",
         description: ""
+      },
+      my_relations: {
+        my_followed_users: [],
+        my_communities: []
       }
     };
   },
@@ -150,9 +158,23 @@ export default {
       this.$axios.post('/join_community', {'community_id': communityId})
           .then(response => {
             if (response.code === 509) {
-              Vue.prototype.$message.error('请勿重复加入社区')
+              Vue.prototype.$message.error('请勿重复加入社团')
             } else if (response.code === 1000) {
-              Vue.prototype.$message.success('成功加入社区')
+              Vue.prototype.$message.success('成功加入社团')
+              this.getCommunityList();
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+    leaveCommunity(communityId) {
+      this.$axios.post('/leave_community', {'community_id': communityId})
+          .then(response => {
+            if (response.code === 404) {
+              Vue.prototype.$message.error('用户不属于该社团')
+            } else if (response.code === 1000) {
+              Vue.prototype.$message.success('成功退出社团')
               this.getCommunityList();
             }
           })
@@ -163,17 +185,17 @@ export default {
     create_Community() {
       this.$axios.post('/community', this.newcommunity)
           .then(response => {
-            console.log(response)
             if (response.code === 500) {
-              Vue.prototype.$message.error('创建失败，检查社团是否已经存在')
-            } else if (response.code === 201) {
-              Vue.prototype.$message.success('成功创建社区')
-              this.dialogVisible=false
+              Vue.prototype.$message.error('创建失败，检查社团是否已经存在');
+            } else if (response.code === 1000) {
+              Vue.prototype.$message.success('成功创建社区');
+              this.dialogVisible = false;
             }
           })
           .catch(error => {
             console.error(error);
           });
+      this.getCommunityList();
     },
     getCommunityList() {
       this.$axios({
@@ -212,10 +234,18 @@ export default {
             console.error('Error adding friendship:', error.response.data.error);
 
           });
+    },
+    async getUserRelations() {
+      const response = await this.$axios.get("/get_followed_users");
+      this.my_relations.my_followed_users = response.followed_users;
+      const response2 = await this.$axios.get("/get_user_communities");
+      this.my_relations.my_communities = response2.my_communities;
+      console.log(this.my_relations);
     }
   },
   mounted: function () {
     this.getCommunityList();
+    this.getUserRelations();
   },
 }
 </script>
@@ -256,6 +286,12 @@ export default {
     font-family: 'Source Sans Pro', sans-serif;
   }
 
+  .action-buttons {
+    display: flex;
+    flex-direction: column; /* Change this to 'row' if you want them in a row */
+    align-items: center; /* Adjust alignment if needed */
+  }
+
   .join-button {
     background-color: #4caf50;
     color: white;
@@ -273,6 +309,25 @@ export default {
 
   .join-button:hover {
     background-color: #45a049;
+  }
+
+  .leave-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 20px 2px 4px 2px; /* Adjust the top margin to create the desired gap */
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  .leave-button:hover {
+    background-color: #d32f2f;
   }
 
   .c-l-list {
@@ -327,12 +382,14 @@ export default {
         padding: 15px;
 
         .con-title {
-          color: #000000;
-          font-size: 18px;
-          font-weight: 500;
+          color: #f5f5f5;
+          font-weight: bold; /* or use a numeric value like 700 for bold */
+          font-family: 'Source Sans Pro', sans-serif;
+          font-size: 24px;
           line-height: 22px;
           text-decoration: none;
           word-break: break-word;
+          align-self: flex-start;
         }
 
         .con-memo {
@@ -343,6 +400,8 @@ export default {
           -webkit-line-clamp: 4;
           display: -webkit-box;
           -webkit-box-orient: vertical;
+          font-size: 18px;
+          color: #9C9496;
         }
 
         .con-cover {
