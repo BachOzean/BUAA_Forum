@@ -167,8 +167,8 @@
                   </h6>
                   <h6 class="comment-name by-author" v-else>Anonymous</h6>
                   <span>{{ comment.timestamp }}</span>
-                    <i class="fas fa-reply" @click=toggleReplyInput(commentIndex)></i>
-                    <!-- 根据showReplyInput属性来显示回复输入框 -->
+                  <i class="fas fa-reply" @click=toggleReplyInput(commentIndex)></i>
+                  <!-- 根据showReplyInput属性来显示回复输入框 -->
 
 
                 </div>
@@ -213,6 +213,7 @@
 // import Comment from '../components/Comment.vue';
 import Vue from 'vue';
 import '@fortawesome/fontawesome-free/css/all.css';
+
 export default {
   name: "Content",
   // components: { Comment },
@@ -306,72 +307,75 @@ export default {
     getPostDetail() {
       this.$axios({
 
-    async getPostDetail() {
-      const response = await this.$axios({
-        method: "get",
-        url: "/posts/" + this.$route.params.id,
-      });
+        async getPostDetail() {
+          const response = await this.$axios({
+            method: "get",
+            url: "/posts/" + this.$route.params.id,
+          });
 
-      if (response.code === 1000) {
-        let MarkdownIt = require('markdown-it');
-        let md = new MarkdownIt();
-        this.post = response.post;
-        this.post.content = md.render(this.post.content);
-        console.log(this.post);
-      } else {
-        console.log(response.message);
-      }
-      this.getCommentsForPost();
-    },
-    vote(post_id) {
-      this.$axios({
-        method: "post",
-        url: "/vote",
-        data: {
-          post_id: post_id,
+          if (response.code === 1000) {
+            let MarkdownIt = require('markdown-it');
+            let md = new MarkdownIt();
+            this.post = response.post;
+            this.post.content = md.render(this.post.content);
+            console.log(this.post);
+          } else {
+            console.log(response.message);
+          }
+          this.getCommentsForPost();
+        },
+        vote(post_id) {
+          this.$axios({
+            method: "post",
+            url: "/vote",
+            data: {
+              post_id: post_id,
+            }
+          })
+              .then(response => {
+                if (response.code == 1000) {
+                  console.log("vote success");
+                  Vue.prototype.$message.success('投票成功');
+                  this.getPostDetail();
+                } else if (response.code == 1009) {
+                  Vue.prototype.$message.error('请勿重复投票')
+                } else if (response.code == 1010) {
+                  Vue.prototype.$message.error('已过投票时间')
+                } else {
+                  console.log(response.msg);
+                  Vue.prototype.$message.error('请先登录')
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+        },
+        goCommunityDetail(community_id) {
+          this.$router.push({
+            name: 'Community',
+            params: {
+              id: community_id
+            }
+          });
+        },
+        getCommentsForPost() {
+          this.$axios.post('/comments', {post_id: this.post.post_id})
+              .then(response => {
+                if (response.code !== 1000) {
+                  console.log('获取一级评论列表失败');
+                } else {
+                  this.post.comments = response.comments;
+                  console.log(this.post.comments);
+                }
+              })
+              .catch(error => {
+                console.error('Error getting comments for post:', error);
+              });
         }
       })
-          .then(response => {
-            if (response.code == 1000) {
-              console.log("vote success");
-              Vue.prototype.$message.success('投票成功');
-              this.getPostDetail();
-            } else if (response.code == 1009) {
-              Vue.prototype.$message.error('请勿重复投票')
-            } else if (response.code == 1010) {
-              Vue.prototype.$message.error('已过投票时间')
-            } else {
-              console.log(response.msg);
-              Vue.prototype.$message.error('请先登录')
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-    },
-    goCommunityDetail(community_id) {
-      this.$router.push({
-        name: 'Community',
-        params: {
-          id: community_id
-        }
-      });
-    },
-    getCommentsForPost() {
-      this.$axios.post('/comments', {post_id: this.post.post_id})
-          .then(response => {
-            if (response.code !== 1000) {
-              console.log('获取一级评论列表失败');
-            } else {
-              this.post.comments = response.comments;
-              console.log(this.post.comments);
-            }
-          })
-          .catch(error => {
-            console.error('Error getting comments for post:', error);
-          });
-    },
+    }
   },
+
   created() {
     this.getPostDetail();
   },
@@ -435,12 +439,14 @@ body {
   background: #e5ded8;
   box-sizing: border-box;
 }
+
 .reply-container {
   display: flex;
   align-items: center;
   gap: 14px;
   margin-right: 14px;
 }
+
 .reply-container i {
   color: #A6A6A6;
   cursor: pointer;
@@ -448,9 +454,11 @@ body {
   -o-transition: color 0.3s ease;
   transition: color 0.3s ease;
 }
+
 .reply-container i:hover {
   color: #03658c;
 }
+
 /**
  * Oscuro: #283035
  * Azul: #03658c
