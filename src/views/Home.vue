@@ -192,11 +192,11 @@ export default {
           .then(response => {
             if (response.code == 1000) {
               console.log("vote success");
-              Vue.prototype.$message.success('投票成功');
+              Vue.prototype.$message.success('点赞成功');
             } else if (response.code == 1009) {
-              Vue.prototype.$message.error('请勿重复投票')
+              Vue.prototype.$message.error('请勿重复点赞');
             } else if (response.code == 1010) {
-              Vue.prototype.$message.error('已过投票时间')
+              Vue.prototype.$message.error('已过点赞时间');
             } else {
               console.log(response.msg);
               Vue.prototype.$message.error('请先登录')
