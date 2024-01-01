@@ -166,17 +166,17 @@
                   <h6 class="comment-name" v-if="comment.author"><a :href="comment.authorLink">{{ comment.author }}</a></h6>
                   <h6 class="comment-name by-author" v-else>Anonymous</h6>
                   <span>{{ comment.timestamp }}</span>
-                  <i class="fas fa-reply" @click="showReplyInput = true"></i>
-                  <!-- 根据showReplyInput属性来显示回复输入框 -->
-                  <div v-if="showReplyInput">
-                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                    <i class="fas fa-reply" @click="showReplyInput = true"></i>
+                    <!-- 根据showReplyInput属性来显示回复输入框 -->
 
-                    <i class="fas fa-paper-plane"></i>
 
-                  </div>
                 </div>
                 <div class="comment-content">
                   {{ comment.content }}
+                </div>
+                <div v-if="showReplyInput" class="reply-container">
+                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <i class="fas fa-paper-plane" @click="submitReply"></i>
                 </div>
               </div>
             </div>
@@ -413,7 +413,22 @@ body {
   background: #e5ded8;
   box-sizing: border-box;
 }
-
+.reply-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-right: 14px;
+}
+.reply-container i {
+  color: #A6A6A6;
+  cursor: pointer;
+  -webkit-transition: color 0.3s ease;
+  -o-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+}
+.reply-container i:hover {
+  color: #03658c;
+}
 /**
  * Oscuro: #283035
  * Azul: #03658c
