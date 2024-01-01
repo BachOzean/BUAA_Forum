@@ -141,145 +141,86 @@
         <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="new_comment">
+            placeholder="请输入评论"
+            v-model="comment_content">
         </el-input>
-        <div class="publish-btn" @click="goPublish">
+        <div class="publish-btn" @click="sendComment">
           发送
         </div>
       </div>
 
 
       <!-- Contenedor Principal -->
+      <!-- Contenedor Principal -->
       <div class="comments-container">
-
         <ul id="comments-list" class="comments-list">
-          <li>
+          <li v-for="comment in post.comments" :key="comment.comment_id">
             <div class="comment-main-level">
               <!-- Avatar -->
-              <div class="comment-avatar"><img
-                  src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
+              <div class="comment-avatar">
+                <img :src="comment.avatar" alt="">
+              </div>
               <!-- Contenedor del Comentario -->
               <div class="comment-box">
                 <div class="comment-head">
-                  <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">Der Bach</a></h6>
-                  <span>comment 44 minutes</span>
-                  <i class="fa fa-reply"></i>
-                  <i class="fa fa-heart"></i>
+                  <h6 class="comment-name" v-if="comment.author"><a>{{ comment.author }}</a>
+                  </h6>
+                  <h6 class="comment-name by-author" v-else>Anonymous</h6>
+                  <span>{{ comment.timestamp }}</span>
+                  <i class="fas fa-reply" @click=toggleReplyInput(commentIndex)></i>
+                  <!-- 根据showReplyInput属性来显示回复输入框 -->
+
+
                 </div>
                 <div class="comment-content">
-                  无知时诋毁原神，懂事时理解原神，成熟时要成为原友！越了解原神就会把它当成在黑夜一望无际的大海上给迷途的船只指引的灯塔，在烈日炎炎的夏天吹来的一股风，在寒风刺骨的冬天里的燃起的篝火！
+                  {{ comment.content }}
+                </div>
+                <div v-if="comment.showReplyInput" class="reply-container">
+                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <i class="fas fa-paper-plane" @click="submitReply(commentIndex)"></i>
                 </div>
               </div>
             </div>
             <!-- Respuestas de los comentarios -->
             <ul class="comments-list reply-list">
-              <li>
+              <li v-for="(reply, replyIndex) in comment.replies" :key="replyIndex">
                 <!-- Avatar -->
-                <div class="comment-avatar"><img
-                    src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
-                <!-- Contenedor del Comentario -->
-                <div class="comment-box">
-                  <div class="comment-head">
-                    <h6 class="comment-name"><a href="http://creaticode.com/blog">Lorena Rojero</a></h6>
-                    <span>comment 5 minutes</span>
-                    <i class="fa fa-reply"></i>
-                    <i class="fa fa-heart"></i>
-                  </div>
-                  <div class="comment-content">
-                    你的素养很差，我现在每天玩原神都能赚150原石，每个月保底5000原石的收入，也就是现实生活中每个月5000美元的收入水平，换算过来最少也30000人民币，虽然我只有18岁，但是已经超越了中国绝大多数人（包括你）的水平，这便是原神给我的骄傲的资本。
-                  </div>
+                <div class="comment-avatar">
+                  <img :src="reply.avatar" alt="">
                 </div>
-              </li>
-
-              <li>
-                <!-- Avatar -->
-                <div class="comment-avatar"><img
-                    src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
                 <!-- Contenedor del Comentario -->
                 <div class="comment-box">
                   <div class="comment-head">
-                    <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">Agustin Ortiz</a></h6>
-                    <span>comment 3 minutes</span>
-                    <i class="fa fa-reply"></i>
-                    <i class="fa fa-heart"></i>
+                    <h6 class="comment-name">
+                      <a>{{ reply.author }}</a>
+                    </h6>
+                    <span>{{ reply.timestamp }}</span>
                   </div>
                   <div class="comment-content">
-                    你还有什么不懂的，不懂的话就去原两把吧，原着原着，你就醒悟了，你会发现，原来还是自己原的太少，为什么要放弃原神这款旷世之作而去玩其他答辩游戏。
+                    {{ reply.content }}
                   </div>
                 </div>
               </li>
             </ul>
           </li>
-
-          <li>
-            <div class="comment-main-level">
-              <!-- Avatar -->
-              <div class="comment-avatar"><img
-                  src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
-              <!-- Contenedor del Comentario -->
-              <div class="comment-box">
-                <div class="comment-head">
-                  <h6 class="comment-name"><a href="http://creaticode.com/blog">Lorena Rojero</a></h6>
-                  <span>comment 11 minutes</span>
-                  <i class="fa fa-reply"></i>
-                  <i class="fa fa-heart"></i>
-                </div>
-                <div class="comment-content">
-                  差不多得了，原神玩家每天都会发成千上万条评论，而且原神都这么出名了，人也多。你就非要挑出来挂最逆天的这几句话吗？还说什么欧泡之类的东西。也就是原神玩家素质高，懒得管也不想管你这个，但凡放在别的游戏圈子里怎么可能容忍你这种行为？积点口德吧。再怎么说原神玩家三观是要比某些人正很多的，为何非要揪着一点黑不放呢？
-                </div>
-              </div>
-            </div>
-          </li>
         </ul>
       </div>
 
     </div>
-
-
-    <!--    <div class="left">-->
-    <!--      <div class="container">-->
-    <!--        <div class="post">-->
-    <!--          <a class="vote">-->
-    <!--            <span class="iconfont icon-up" @click="vote(post.post_id, 1)"></span>-->
-    <!--          </a>-->
-    <!--          <span class="text">{{ post.vote_num }}</span>-->
-    <!--          <a class="vote">-->
-    <!--            <span class="iconfont icon-down" @click="vote(post.post_id, -1)"></span>-->
-    <!--          </a>-->
-    <!--        </div>-->
-    <!--        <div class="l-container">-->
-    <!--          <h4 class="con-title">{{ post.title }}</h4>-->
-    <!--          <div class="con-info markdown-body" v-html="post.content"></div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      &lt;!&ndash; 评论区 &ndash;&gt;-->
-    <!--      <Comment :sourceId="this.$route.params.id"></Comment>-->
-    <!--    </div>-->
-    <!--    <div class="right">-->
-    <!--      <div class="topic-info">-->
-    <!--        <h5 class="t-header"></h5>-->
-    <!--        <div class="t-info">-->
-    <!--          <a class="avatar"></a>-->
-    <!--          <span class="topic-name">b/{{ post.community.community_name }}</span>-->
-    <!--        </div>-->
-    <!--        <p class="t-desc">{{ post.community.introduction }}</p>-->
-    <!--        <p class="t-create-time">{{ post.community.create_time }}</p>-->
-    <!--        <div class="date">{{ create_time }}</div>-->
-    <!--        <button class="topic-btn" @click="goCommunityDetail(post.community.community_id)">JOIN</button>-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
 </template>
 <script>
 // import Comment from '../components/Comment.vue';
 import Vue from 'vue';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 export default {
   name: "Content",
   // components: { Comment },
   data() {
     return {
+      showReplyInput: false,
+      comment_content: '',
       post: {
         post_id: 0,
         title: '11111111111',
@@ -296,70 +237,150 @@ export default {
           introduction: '1',
           create_time: '11111',
         },
-        new_comment: '',
-      },
+        comments: [
+          {
+            comment_id: 0,
+            avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg",
+            author: "Der Bach",
+            timestamp: "comment 44 minutes",
+            content: "无知时诋毁原神，懂事时理解原神，成熟时要成为原友！越了解原神就会把它当成在黑夜一望无际的大海上给迷途的船只指引的灯塔，在烈日炎炎的夏天吹来的一股风，在寒风刺骨的冬天里的燃起的篝火！",
+            showReplyInput: false,
+            replies: [
+              {
+                avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg",
+                author: "Lorena Rojero",
+                timestamp: "comment 5 minutes",
+                content: "你的素养很差，我现在每天玩原神都能赚150原石，每个月保底5000原石的收入，也就是现实生活中每个月5000美元的收入水平，换算过来最少也30000人民币，虽然我只有18岁，但是已经超越了中国绝大多数人（包括你）的水平，这便是原神给我的骄傲的资本。"
+              },
+              {
+                avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg",
+                author: "Agustin Ortiz",
+                timestamp: "comment 3 minutes",
+                content: "你还有什么不懂的，不懂的话就去原两把吧，原着原着，你就醒悟了，你会发现，原来还是自己原的太少，为什么要放弃原神这款旷世之作而去玩其他答辩游戏。"
+              }
+            ]
+          },
+          {
+            showReplyInput: false,
+            avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg",
+            author: "Lorena Rojero",
+            timestamp: "comment 11 minutes",
+            content: "差不多得了，原神玩家每天都会发成千上万条评论，而且原神都这么出名了，人也多。你就非要挑出来挂最逆天的这几句话吗？还说什么欧泡之类的东西。也就是原神玩家素质高，懒得管也不想管你这个，但凡放在别的游戏圈子里怎么可能容忍你这种行为？积点口德吧。再怎么说原神玩家三观是要比某些人正很多的，为何非要揪着一点黑不放呢？",
+            replies: []
+          }
+        ]
+      }
     }
   },
 
   methods: {
+    async sendComment() {
+      const response = await this.$axios.post(
+          '/post_comment',
+          {
+            content: this.comment_content,
+            to_post_id: this.post.post_id,
+          },
+      );
 
+      if (response.code === 1000) {
+        this.$message.success('评论发送成功');
+        this.comment_content = '';
+      } else {
+        this.$message.error('评论失败');
+      }
+      this.getCommentsForPost();
+    },
+    toggleReplyInput(commentIndex) {
+      this.post.comments[commentIndex].showReplyInput = true;
+      console.log(commentIndex);
+
+    },
+    submitReply(commentIndex) {
+      // 处理发表回复的逻辑
+      // 可以在这里获取输入框中的内容，并执行相应的操作
+      // 例如，将回复内容添加到评论列表中或发送给服务器等
+      // 处理完逻辑后，可以重置输入框并隐藏回复输入框
+      console.log(commentIndex);
+      this.post.comments[commentIndex].showReplyInput = false;
+    },
     getPostDetail() {
       this.$axios({
-        method: "get",
-        url: "/posts/" + this.$route.params.id,
-      })
-          .then(response => {
-            if (response.code == 1000) {
-              let MarkdownIt = require('markdown-it');
-              let md = new MarkdownIt();
-              this.post = response.post;
-              this.post.content = md.render(this.post.content);
-              console.log(this.post)
-            } else {
-              console.log(response.message);
+
+        async getPostDetail() {
+          const response = await this.$axios({
+            method: "get",
+            url: "/posts/" + this.$route.params.id,
+          });
+
+          if (response.code === 1000) {
+            let MarkdownIt = require('markdown-it');
+            let md = new MarkdownIt();
+            this.post = response.post;
+            this.post.content = md.render(this.post.content);
+            console.log(this.post);
+          } else {
+            console.log(response.message);
+          }
+          this.getCommentsForPost();
+        },
+        vote(post_id) {
+          this.$axios({
+            method: "post",
+            url: "/vote",
+            data: {
+              post_id: post_id,
             }
           })
-          .catch(error => {
-            console.log(error);
+              .then(response => {
+                if (response.code == 1000) {
+                  console.log("vote success");
+                  Vue.prototype.$message.success('投票成功');
+                  this.getPostDetail();
+                } else if (response.code == 1009) {
+                  Vue.prototype.$message.error('请勿重复投票')
+                } else if (response.code == 1010) {
+                  Vue.prototype.$message.error('已过投票时间')
+                } else {
+                  console.log(response.msg);
+                  Vue.prototype.$message.error('请先登录')
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+        },
+        goCommunityDetail(community_id) {
+          this.$router.push({
+            name: 'Community',
+            params: {
+              id: community_id
+            }
           });
-    },
-    vote(post_id) {
-      this.$axios({
-        method: "post",
-        url: "/vote",
-        data: {
-          post_id: post_id,
+        },
+        getCommentsForPost() {
+          this.$axios.post('/comments', {post_id: this.post.post_id})
+              .then(response => {
+                if (response.code !== 1000) {
+                  console.log('获取一级评论列表失败');
+                } else {
+                  this.post.comments = response.comments;
+                  console.log(this.post.comments);
+                }
+              })
+              .catch(error => {
+                console.error('Error getting comments for post:', error);
+              });
         }
       })
-          .then(response => {
-            if (response.code == 1000) {
-              console.log("vote success");
-              Vue.prototype.$message.success('投票成功');
-              this.getPostDetail();
-            } else if (response.code == 1009) {
-              Vue.prototype.$message.error('请勿重复投票')
-            } else if (response.code == 1010) {
-              Vue.prototype.$message.error('已过投票时间')
-            } else {
-              console.log(response.msg);
-              Vue.prototype.$message.error('请先登录')
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-    },
-    goCommunityDetail(community_id) {
-      this.$router.push({
-        name: 'Community',
-        params: {
-          id: community_id
-        }
-      });
-    },
+    }
+  },
+
+  created() {
+    this.getPostDetail();
   },
   mounted() {
-    this.getPostDetail();
+
     let confettiAmount = 60,
         confettiColors = [
           '#7d32f5',
@@ -417,6 +438,25 @@ export default {
 body {
   background: #e5ded8;
   box-sizing: border-box;
+}
+
+.reply-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-right: 14px;
+}
+
+.reply-container i {
+  color: #A6A6A6;
+  cursor: pointer;
+  -webkit-transition: color 0.3s ease;
+  -o-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+}
+
+.reply-container i:hover {
+  color: #03658c;
 }
 
 /**
