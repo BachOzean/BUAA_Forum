@@ -1,6 +1,29 @@
 <template>
   <div class="content">
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="50%">
+      <el-form :inline="true" :model="newcommunity" class="form">
+        <el-row>
+          <el-col>
+            <el-form-item label="社团名称">
+              <el-input v-model="newcommunity.community_name"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-form-item label="社团简介">
+              <el-input type="textarea" v-model="newcommunity.description"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
+      </el-form>
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="create_Community()">确 定</el-button>
+    </el-dialog>
     <div class="c-l-header">
       <h1 class="title">社团列表</h1>
       <div class="search-text-box">
@@ -10,6 +33,8 @@
         </div>
       </div>
       <div class="publish-btn" @click="searchCommunityList">搜索</div>
+      <div class="publish-btn" @click="dialogVisible = true">创建社团</div>
+
     </div>
 
     <ul class="c-l-list">
@@ -67,7 +92,12 @@ export default {
       pageSize: 5,
       communityTotal: 1,
       keyword: '',
-      isSearch: false
+      isSearch: false,
+      dialogVisible: false,
+      newcommunity:{
+        community_name: "",
+        description: ""
+      }
     };
   },
   methods: {
@@ -124,6 +154,21 @@ export default {
             } else if (response.code === 1000) {
               Vue.prototype.$message.success('成功加入社区')
               this.getCommunityList();
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+    create_Community() {
+      this.$axios.post('/community', this.newcommunity)
+          .then(response => {
+            console.log(response)
+            if (response.code === 500) {
+              Vue.prototype.$message.error('创建失败，检查社团是否已经存在')
+            } else if (response.code === 201) {
+              Vue.prototype.$message.success('成功创建社区')
+              this.dialogVisible=false
             }
           })
           .catch(error => {
