@@ -166,7 +166,7 @@
                   <h6 class="comment-name" v-if="comment.author"><a :href="comment.authorLink">{{ comment.author }}</a></h6>
                   <h6 class="comment-name by-author" v-else>Anonymous</h6>
                   <span>{{ comment.timestamp }}</span>
-                    <i class="fas fa-reply" @click="showReplyInput = true"></i>
+                    <i class="fas fa-reply" @click=toggleReplyInput(commentIndex)></i>
                     <!-- 根据showReplyInput属性来显示回复输入框 -->
 
 
@@ -174,9 +174,9 @@
                 <div class="comment-content">
                   {{ comment.content }}
                 </div>
-                <div v-if="showReplyInput" class="reply-container">
+                <div v-if="comment.showReplyInput" class="reply-container">
                   <el-input v-model="input" placeholder="请输入内容"></el-input>
-                  <i class="fas fa-paper-plane" @click="submitReply"></i>
+                  <i class="fas fa-paper-plane" @click="submitReply(commentIndex)"></i>
                 </div>
               </div>
             </div>
@@ -242,6 +242,7 @@ export default {
             authorLink: "http://creaticode.com/blog",
             timestamp: "comment 44 minutes",
             content: "无知时诋毁原神，懂事时理解原神，成熟时要成为原友！越了解原神就会把它当成在黑夜一望无际的大海上给迷途的船只指引的灯塔，在烈日炎炎的夏天吹来的一股风，在寒风刺骨的冬天里的燃起的篝火！",
+            showReplyInput: false,
             replies: [
               {
                 avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg",
@@ -260,6 +261,7 @@ export default {
             ]
           },
           {
+            showReplyInput: false,
             avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg",
             author: "Lorena Rojero",
             authorLink: "http://creaticode.com/blog",
@@ -290,12 +292,18 @@ export default {
         this.$message.error('评论失败');
       }
     },
-    submitReply() {
+    toggleReplyInput(commentIndex) {
+      this.post.comments[commentIndex].showReplyInput = true;
+      console.log(commentIndex);
+
+    },
+    submitReply(commentIndex) {
       // 处理发表回复的逻辑
       // 可以在这里获取输入框中的内容，并执行相应的操作
       // 例如，将回复内容添加到评论列表中或发送给服务器等
       // 处理完逻辑后，可以重置输入框并隐藏回复输入框
-      this.showReplyInput = false;
+      console.log(commentIndex);
+      this.post.comments[commentIndex].showReplyInput = false;
     },
     getPostDetail() {
       this.$axios({
