@@ -36,23 +36,23 @@
             </div>
           </div>
         </div>
-        <div class="btns">
-          <div v-show="!isLogin">
-            <a class="login-btn" @click="goLogin">登录</a>
-            <a class="login-btn" @click="goSignUp">注册</a>
-          </div>
-          <div class="user-box" v-show="isLogin">
-            <span class="user" @click="goUserInfo">{{ currUsername }}</span>
-            <div class="dropdown-content">
-              <a @click="goLogout">登出</a>
-              <a @click="goMyPost">我的发帖</a>
-              <a @click="goUserInfo">个人信息</a>
-              <a @click="logout">注销</a>
-            </div>
+      <div class="btns">
+        <div v-show="!isLogin">
+          <a class="login-btn" @click="goLogin">登录</a>
+          <a class="login-btn" @click="goSignUp">注册</a>
+        </div>
+        <div class="user-box" v-show="isLogin">
+          <span class="user" @click="goUserInfo">{{ currUsername }}</span>
+          <div class="dropdown-content">
+            <a @click="goLogout">登出</a>
+            <a @click="goMyPost">我的发帖</a>
+            <a @click="goUserInfo">个人信息</a>
+            <a @click="goToMyCommunity()">我的社团</a>
           </div>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
   </div>
 </template>
 
@@ -119,6 +119,9 @@ export default {
     goPublish() {
       this.$router.push({name: "Publish"})
     },
+    goToMyCommunity() {
+      this.$router.push({name: "MyCommunity"})
+    },
     logout() {
       const isConfirmed = window.confirm('确认注销');
       if (isConfirmed) {
@@ -135,7 +138,6 @@ export default {
               console.log(error)
             });
       }
-
     }
   }
 };

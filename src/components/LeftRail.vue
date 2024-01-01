@@ -14,7 +14,7 @@
           <i class="el-icon-location"></i>
           <span slot="title">我的帖子</span>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2" @click="goToMyCommunity()">
           <i class="el-icon-menu"></i>
           <span slot="title">我的社团</span>
         </el-menu-item>
@@ -48,6 +48,9 @@ export default {
     },
     goToMyPosts(){
       this.$router.push({name:"MyPosts"})
+    },
+    goToMyCommunity(){
+      this.$router.push({name:"MyCommunity"})
     }
   }
 }

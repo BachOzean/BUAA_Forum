@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <left-rail></left-rail>
+
   <div class="content">
     <el-dialog
         title="提示"
@@ -25,7 +28,7 @@
       <el-button type="primary" @click="create_Community()">确 定</el-button>
     </el-dialog>
     <div class="c-l-header">
-      <h1 class="title">社团列表</h1>
+      <h1 class="title">我的社团</h1>
       <div class="search-text-box">
         <div class="search-text">
           <input type="text" class="search-text" placeholder="请输入社团的关键词" v-model="keyword"
@@ -50,18 +53,14 @@
             </div>
           </div>
 
-          <div class="action-buttons">
-            <button class="join-button" @click="joinCommunity(community.community_id)">
-              加入
-            </button>
-            <button class="leave-button" @click="leaveCommunity(community.community_id)">
-              退出
-            </button>
-          </div>
+          <button class="join-button" @click="joinCommunity(community.community_id)">
+            加入
+          </button>
         </div>
 
+        <!-- 将成员列表改为横向排列 -->
         <div class="community-users">
-          <h5 class="users_title">成员:</h5>
+          <h5>成员:</h5>
           <ul class="horizontal-user-list">
             <li v-for="user in community.users" :key="user.user_id" class="horizontal-user-item">
               {{ user.user_name }}
@@ -81,14 +80,17 @@
       </div>
     </ul>
   </div>
+  </div>
 </template>
 <script setup>
 
 
 import Vue from "vue";
+import LeftRail from "@/components/LeftRail.vue";
 
 export default {
   name: "communities",
+  components:{LeftRail},
   data() {
     var community = {
       community_id: 1,
@@ -104,13 +106,9 @@ export default {
       keyword: '',
       isSearch: false,
       dialogVisible: false,
-      newcommunity: {
+      newcommunity:{
         community_name: "",
         description: ""
-      },
-      my_relations: {
-        my_followed_users: [],
-        my_communities: []
       }
     };
   },
@@ -164,23 +162,9 @@ export default {
       this.$axios.post('/join_community', {'community_id': communityId})
           .then(response => {
             if (response.code === 509) {
-              Vue.prototype.$message.error('请勿重复加入社团')
+              Vue.prototype.$message.error('请勿重复加入社区')
             } else if (response.code === 1000) {
-              Vue.prototype.$message.success('成功加入社团')
-              this.getCommunityList();
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
-    },
-    leaveCommunity(communityId) {
-      this.$axios.post('/leave_community', {'community_id': communityId})
-          .then(response => {
-            if (response.code === 404) {
-              Vue.prototype.$message.error('用户不属于该社团')
-            } else if (response.code === 1000) {
-              Vue.prototype.$message.success('成功退出社团')
+              Vue.prototype.$message.success('成功加入社区')
               this.getCommunityList();
             }
           })
@@ -191,28 +175,29 @@ export default {
     create_Community() {
       this.$axios.post('/community', this.newcommunity)
           .then(response => {
+            console.log(response)
             if (response.code === 500) {
-              Vue.prototype.$message.error('创建失败，检查社团是否已经存在');
-            } else if (response.code === 1000) {
-              Vue.prototype.$message.success('成功创建社区');
-              this.dialogVisible = false;
+              Vue.prototype.$message.error('创建失败，检查社团是否已经存在')
+            } else if (response.code === 201) {
+              Vue.prototype.$message.success('成功创建社区')
+              this.dialogVisible=false
             }
           })
           .catch(error => {
             console.error(error);
           });
-      this.getCommunityList();
     },
     getCommunityList() {
       this.$axios({
         method: "get",
-        url: "/get_communities",
+        url: "/my_communities",
         params: {
           page: this.pageNumber,
           size: this.pageSize,
         }
       })
           .then(response => {
+            console.log(response)
             if (response.code === 1000) {
               this.communityList = response.data;
               this.communityTotal = response.total_num;
@@ -240,18 +225,10 @@ export default {
             console.error('Error adding friendship:', error.response.data.error);
 
           });
-    },
-    async getUserRelations() {
-      const response = await this.$axios.get("/get_followed_users");
-      this.my_relations.my_followed_users = response.followed_users;
-      const response2 = await this.$axios.get("/get_user_communities");
-      this.my_relations.my_communities = response2.my_communities;
-      console.log(this.my_relations);
     }
   },
   mounted: function () {
     this.getCommunityList();
-    this.getUserRelations();
   },
 }
 </script>
@@ -292,12 +269,6 @@ export default {
     font-family: 'Source Sans Pro', sans-serif;
   }
 
-  .action-buttons {
-    display: flex;
-    flex-direction: column; /* Change this to 'row' if you want them in a row */
-    align-items: center; /* Adjust alignment if needed */
-  }
-
   .join-button {
     background-color: #4caf50;
     color: white;
@@ -317,25 +288,6 @@ export default {
     background-color: #45a049;
   }
 
-  .leave-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 20px 2px 4px 2px; /* Adjust the top margin to create the desired gap */
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-
-  .leave-button:hover {
-    background-color: #d32f2f;
-  }
-
   .c-l-list {
     .c-l-item {
       list-style: none;
@@ -349,7 +301,7 @@ export default {
       margin-top: 20px;
       flex-direction: column;
       padding: 20px;
-
+      max-width: 800px;
       .post {
         align-items: center;
         box-sizing: border-box;
@@ -388,14 +340,12 @@ export default {
         padding: 15px;
 
         .con-title {
-          color: #f5f5f5;
-          font-weight: bold; /* or use a numeric value like 700 for bold */
-          font-family: 'Source Sans Pro', sans-serif;
-          font-size: 24px;
+          color: #000000;
+          font-size: 18px;
+          font-weight: 500;
           line-height: 22px;
           text-decoration: none;
           word-break: break-word;
-          align-self: flex-start;
         }
 
         .con-memo {
@@ -406,8 +356,6 @@ export default {
           -webkit-line-clamp: 4;
           display: -webkit-box;
           -webkit-box-orient: vertical;
-          font-size: 18px;
-          color: #9C9496;
         }
 
         .con-cover {
@@ -455,6 +403,7 @@ export default {
     display: flex;
     padding: 20px;
     gap: 20px;
+    max-width: 800px;
 
     .iconfont {
       margin-right: 4px;
@@ -581,7 +530,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-   // flex-direction: column;
+    // flex-direction: column;
   }
 
   .text-container {
@@ -645,6 +594,7 @@ export default {
 
 /* 使用 'Source Sans Pro' 字体 */
 .content {
+  margin-left: 350px;
   font-family: 'Source Sans Pro', sans-serif;
 }
 </style>
