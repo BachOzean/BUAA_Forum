@@ -151,85 +151,52 @@
 
 
       <!-- Contenedor Principal -->
+      <!-- Contenedor Principal -->
       <div class="comments-container">
-
         <ul id="comments-list" class="comments-list">
-          <li>
+          <li v-for="(comment, commentIndex) in post.comments" :key="commentIndex">
             <div class="comment-main-level">
               <!-- Avatar -->
-              <div class="comment-avatar"><img
-                  src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
+              <div class="comment-avatar">
+                <img :src="comment.avatar" alt="">
+              </div>
               <!-- Contenedor del Comentario -->
               <div class="comment-box">
                 <div class="comment-head">
-                  <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">Der Bach</a></h6>
-                  <span>comment 44 minutes</span>
+                  <h6 class="comment-name" v-if="comment.author"><a :href="comment.authorLink">{{ comment.author }}</a></h6>
+                  <h6 class="comment-name by-author" v-else>Anonymous</h6>
+                  <span>{{ comment.timestamp }}</span>
                   <i class="fa fa-reply"></i>
                   <i class="fa fa-heart"></i>
                 </div>
                 <div class="comment-content">
-                  无知时诋毁原神，懂事时理解原神，成熟时要成为原友！越了解原神就会把它当成在黑夜一望无际的大海上给迷途的船只指引的灯塔，在烈日炎炎的夏天吹来的一股风，在寒风刺骨的冬天里的燃起的篝火！
+                  {{ comment.content }}
                 </div>
               </div>
             </div>
             <!-- Respuestas de los comentarios -->
             <ul class="comments-list reply-list">
-              <li>
+              <li v-for="(reply, replyIndex) in comment.replies" :key="replyIndex">
                 <!-- Avatar -->
-                <div class="comment-avatar"><img
-                    src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
-                <!-- Contenedor del Comentario -->
-                <div class="comment-box">
-                  <div class="comment-head">
-                    <h6 class="comment-name"><a href="http://creaticode.com/blog">Lorena Rojero</a></h6>
-                    <span>comment 5 minutes</span>
-                    <i class="fa fa-reply"></i>
-                    <i class="fa fa-heart"></i>
-                  </div>
-                  <div class="comment-content">
-                    你的素养很差，我现在每天玩原神都能赚150原石，每个月保底5000原石的收入，也就是现实生活中每个月5000美元的收入水平，换算过来最少也30000人民币，虽然我只有18岁，但是已经超越了中国绝大多数人（包括你）的水平，这便是原神给我的骄傲的资本。
-                  </div>
+                <div class="comment-avatar">
+                  <img :src="reply.avatar" alt="">
                 </div>
-              </li>
-
-              <li>
-                <!-- Avatar -->
-                <div class="comment-avatar"><img
-                    src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
                 <!-- Contenedor del Comentario -->
                 <div class="comment-box">
                   <div class="comment-head">
-                    <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">Agustin Ortiz</a></h6>
-                    <span>comment 3 minutes</span>
+                    <h6 class="comment-name">
+                      <a :href="reply.authorLink">{{ reply.author }}</a>
+                    </h6>
+                    <span>{{ reply.timestamp }}</span>
                     <i class="fa fa-reply"></i>
                     <i class="fa fa-heart"></i>
                   </div>
                   <div class="comment-content">
-                    你还有什么不懂的，不懂的话就去原两把吧，原着原着，你就醒悟了，你会发现，原来还是自己原的太少，为什么要放弃原神这款旷世之作而去玩其他答辩游戏。
+                    {{ reply.content }}
                   </div>
                 </div>
               </li>
             </ul>
-          </li>
-
-          <li>
-            <div class="comment-main-level">
-              <!-- Avatar -->
-              <div class="comment-avatar"><img
-                  src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
-              <!-- Contenedor del Comentario -->
-              <div class="comment-box">
-                <div class="comment-head">
-                  <h6 class="comment-name"><a href="http://creaticode.com/blog">Lorena Rojero</a></h6>
-                  <span>comment 11 minutes</span>
-                  <i class="fa fa-reply"></i>
-                  <i class="fa fa-heart"></i>
-                </div>
-                <div class="comment-content">
-                  差不多得了，原神玩家每天都会发成千上万条评论，而且原神都这么出名了，人也多。你就非要挑出来挂最逆天的这几句话吗？还说什么欧泡之类的东西。也就是原神玩家素质高，懒得管也不想管你这个，但凡放在别的游戏圈子里怎么可能容忍你这种行为？积点口德吧。再怎么说原神玩家三观是要比某些人正很多的，为何非要揪着一点黑不放呢？
-                </div>
-              </div>
-            </div>
           </li>
         </ul>
       </div>
@@ -296,7 +263,39 @@ export default {
           introduction: '1',
           create_time: '11111',
         },
-        new_comment: '',
+        comments: [
+          {
+            avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg",
+            author: "Der Bach",
+            authorLink: "http://creaticode.com/blog",
+            timestamp: "comment 44 minutes",
+            content: "无知时诋毁原神，懂事时理解原神，成熟时要成为原友！越了解原神就会把它当成在黑夜一望无际的大海上给迷途的船只指引的灯塔，在烈日炎炎的夏天吹来的一股风，在寒风刺骨的冬天里的燃起的篝火！",
+            replies: [
+              {
+                avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg",
+                author: "Lorena Rojero",
+                authorLink: "http://creaticode.com/blog",
+                timestamp: "comment 5 minutes",
+                content: "你的素养很差，我现在每天玩原神都能赚150原石，每个月保底5000原石的收入，也就是现实生活中每个月5000美元的收入水平，换算过来最少也30000人民币，虽然我只有18岁，但是已经超越了中国绝大多数人（包括你）的水平，这便是原神给我的骄傲的资本。"
+              },
+              {
+                avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg",
+                author: "Agustin Ortiz",
+                authorLink: "http://creaticode.com/blog",
+                timestamp: "comment 3 minutes",
+                content: "你还有什么不懂的，不懂的话就去原两把吧，原着原着，你就醒悟了，你会发现，原来还是自己原的太少，为什么要放弃原神这款旷世之作而去玩其他答辩游戏。"
+              }
+            ]
+          },
+          {
+            avatar: "http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg",
+            author: "Lorena Rojero",
+            authorLink: "http://creaticode.com/blog",
+            timestamp: "comment 11 minutes",
+            content: "差不多得了，原神玩家每天都会发成千上万条评论，而且原神都这么出名了，人也多。你就非要挑出来挂最逆天的这几句话吗？还说什么欧泡之类的东西。也就是原神玩家素质高，懒得管也不想管你这个，但凡放在别的游戏圈子里怎么可能容忍你这种行为？积点口德吧。再怎么说原神玩家三观是要比某些人正很多的，为何非要揪着一点黑不放呢？",
+            replies: []
+          }
+        ]
       },
     }
   },
