@@ -47,6 +47,7 @@
             <a @click="goLogout">登出</a>
             <a @click="goMyPost">我的发帖</a>
             <a @click="goUserInfo">个人信息</a>
+            <a @click="goToMyCommunity()">我的社团</a>
           </div>
         </div>
       </div>
@@ -117,6 +118,9 @@ export default {
     },
     goPublish() {
       this.$router.push({name: "Publish"})
+    },
+    goToMyCommunity(){
+      this.$router.push({name:"MyCommunity"})
     }
   }
 };

@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <left-rail></left-rail>
+
   <div class="content">
     <el-dialog
         title="提示"
@@ -25,7 +28,7 @@
       <el-button type="primary" @click="create_Community()">确 定</el-button>
     </el-dialog>
     <div class="c-l-header">
-      <h1 class="title">社团列表</h1>
+      <h1 class="title">我的社团</h1>
       <div class="search-text-box">
         <div class="search-text">
           <input type="text" class="search-text" placeholder="请输入社团的关键词" v-model="keyword"
@@ -77,14 +80,17 @@
       </div>
     </ul>
   </div>
+  </div>
 </template>
 <script setup>
 
 
 import Vue from "vue";
+import LeftRail from "@/components/LeftRail.vue";
 
 export default {
   name: "communities",
+  components:{LeftRail},
   data() {
     var community = {
       community_id: 1,
@@ -184,13 +190,14 @@ export default {
     getCommunityList() {
       this.$axios({
         method: "get",
-        url: "/get_communities",
+        url: "/my_communities",
         params: {
           page: this.pageNumber,
           size: this.pageSize,
         }
       })
           .then(response => {
+            console.log(response)
             if (response.code === 1000) {
               this.communityList = response.data;
               this.communityTotal = response.total_num;
@@ -294,7 +301,7 @@ export default {
       margin-top: 20px;
       flex-direction: column;
       padding: 20px;
-
+      max-width: 800px;
       .post {
         align-items: center;
         box-sizing: border-box;
@@ -396,6 +403,7 @@ export default {
     display: flex;
     padding: 20px;
     gap: 20px;
+    max-width: 800px;
 
     .iconfont {
       margin-right: 4px;
@@ -522,7 +530,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-   // flex-direction: column;
+    // flex-direction: column;
   }
 
   .text-container {
@@ -586,6 +594,7 @@ export default {
 
 /* 使用 'Source Sans Pro' 字体 */
 .content {
+  margin-left: 350px;
   font-family: 'Source Sans Pro', sans-serif;
 }
 </style>
