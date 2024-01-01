@@ -166,8 +166,14 @@
                   <h6 class="comment-name" v-if="comment.author"><a :href="comment.authorLink">{{ comment.author }}</a></h6>
                   <h6 class="comment-name by-author" v-else>Anonymous</h6>
                   <span>{{ comment.timestamp }}</span>
-                  <i class="fa fa-reply"></i>
-                  <i class="fa fa-heart"></i>
+                  <i class="fas fa-reply" @click="showReplyInput = true"></i>
+                  <!-- 根据showReplyInput属性来显示回复输入框 -->
+                  <div v-if="showReplyInput">
+                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+
+                    <i class="fas fa-paper-plane"></i>
+
+                  </div>
                 </div>
                 <div class="comment-content">
                   {{ comment.content }}
@@ -188,8 +194,6 @@
                       <a :href="reply.authorLink">{{ reply.author }}</a>
                     </h6>
                     <span>{{ reply.timestamp }}</span>
-                    <i class="fa fa-reply"></i>
-                    <i class="fa fa-heart"></i>
                   </div>
                   <div class="comment-content">
                     {{ reply.content }}
@@ -207,12 +211,13 @@
 <script>
 // import Comment from '../components/Comment.vue';
 import Vue from 'vue';
-
+import '@fortawesome/fontawesome-free/css/all.css';
 export default {
   name: "Content",
   // components: { Comment },
   data() {
     return {
+      showReplyInput: false,
       comment_content: '',
       post: {
         post_id: 0,
@@ -284,6 +289,13 @@ export default {
       } else {
         this.$message.error('评论失败');
       }
+    },
+    submitReply() {
+      // 处理发表回复的逻辑
+      // 可以在这里获取输入框中的内容，并执行相应的操作
+      // 例如，将回复内容添加到评论列表中或发送给服务器等
+      // 处理完逻辑后，可以重置输入框并隐藏回复输入框
+      this.showReplyInput = false;
     },
     getPostDetail() {
       this.$axios({
