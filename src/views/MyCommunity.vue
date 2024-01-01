@@ -53,8 +53,8 @@
             </div>
           </div>
 
-          <button class="join-button" @click="joinCommunity(community.community_id)">
-            加入
+          <button class="leave-button" @click="leaveCommunity(community.community_id)">
+            退出
           </button>
         </div>
 
@@ -172,6 +172,20 @@ export default {
             console.error(error);
           });
     },
+    leaveCommunity(communityId) {
+      this.$axios.post('/leave_community', {'community_id': communityId})
+          .then(response => {
+            if (response.code === 404) {
+              Vue.prototype.$message.error('用户不属于该社团')
+            } else if (response.code === 1000) {
+              Vue.prototype.$message.success('成功退出社团')
+              this.getCommunityList();
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
     create_Community() {
       this.$axios.post('/community', this.newcommunity)
           .then(response => {
@@ -233,6 +247,21 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.leave-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 20px 2px 4px 2px; /* Adjust the top margin to create the desired gap */
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
 .search-text-box {
   display: flex;
   justify-content: space-between;
