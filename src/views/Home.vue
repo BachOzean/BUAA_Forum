@@ -3,6 +3,7 @@
     <div class="content">
       <div class="left">
         <LeftOne></LeftOne>
+        <left-tag></left-tag>
       </div>
       <div class="center">
         <div class="c-l-header">
@@ -68,11 +69,12 @@
 // @ is an alias to /src
 import Vue from 'vue';
 import confetti from 'canvas-confetti';
-import LeftOne from "@/components/LeftOne.vue";
+import LeftOne from "@/components/LeftCommunity.vue";
+import LeftTag from "@/components/LeftTag.vue";
 
 export default {
   name: "Home",
-  components: {LeftOne},
+  components: {LeftTag, LeftOne},
   data() {
     var post1 = {
       post_id: 1,
@@ -508,18 +510,18 @@ button {
   padding: 20px 20px;
   background: #2c353d;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #2c353d, #4f5d73);
+  //background: -webkit-linear-gradient(to right, #2c353d, #4f5d73);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #2c353d, #303f56);
+  //background: linear-gradient(to right, #2c353d, #303f56);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
   .left {
-    width: 255px;
+    width: 360px;
     height: fit-content;
     margin-top: 20px;
-    background: var(--Dark-3, #262d34);
-    border-radius: 6px;
+    border-radius: 16px;
+    gap: 20px;
   }
 
 
